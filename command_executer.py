@@ -21,3 +21,10 @@ def print_text(text: str,px,py,board,H,W):
         if 0 <= tx < W and 0 <= ty < H and board[ty][tx] == EMPTY:
             board[ty][tx] = ch
     return True
+def assignment(variable_map:dict,variable_list:list,value):
+    for i in range(len(variable_list)-1,-1,-1):
+        if variable_list[i].isalpha():
+            variable_map[variable_list[i]]= value
+        else:
+            raise ValueError(f"Invalid variable name '{variable_list[i]}'.")
+    return True
