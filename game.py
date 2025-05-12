@@ -1,7 +1,7 @@
 import os
 import sys
 from map_module import Map
-
+from command_parser import parse_and_execute_command
 # ────────── 키 입력 처리 (Windows / Unix) ──────────
 try:
     import msvcrt
@@ -70,7 +70,8 @@ class Game:
                     break
                 if ch in DIR:
                     dx, dy = DIR[ch]
-                    if not self._move_player(dx, dy):
+                    result = self._move_player(dx, dy)
+                    if not result:
                         break
                     self._draw()
         print("게임 종료")
@@ -108,39 +109,6 @@ class Game:
         while tx >= 0 and self.board[self.py][tx] != EMPTY:
             code = self.board[self.py][tx] + code
             tx -= 1
-        if code == 'return':
-            return False
-        # move("..."), 문자열 길이 2 이상 지원
-        if code.startswith('move(') and code.endswith(')'):
-            raw = code[5:-1]
-            if len(raw) >= 2 and raw[0] in ('"', "'") and raw[-1] == raw[0]:
-                text = raw[1:-1]
-            else:
-                text = raw
-            dx, dy = self.last_dir
-            # 이동 대상 문자 위치 수집
-            positions = [(x, y) for y in range(self.H) for x in range(self.W) if self.board[y][x] in text]
-            # 방향별 정렬
-            if dx > 0: positions.sort(key=lambda p: p[0], reverse=True)
-            if dx < 0: positions.sort(key=lambda p: p[0])
-            if dy > 0: positions.sort(key=lambda p: p[1], reverse=True)
-            if dy < 0: positions.sort(key=lambda p: p[1])
-            for x, y in positions:
-                ch = self.board[y][x]
-                nx, ny = x + dx, y + dy
-                if 0 <= nx < self.W and 0 <= ny < self.H and self.board[ny][nx] == EMPTY:
-                    self.board[ny][nx] = ch
-                    self.board[y][x] = EMPTY
-        # print("..."), 인용부호 처리
-        elif code.startswith('print(') and code.endswith(')'):
-            arg = code[6:-1]
-            if len(arg) >= 2 and arg[0] in ('"', "'") and arg[-1] == arg[0]:
-                text = arg[1:-1]
-            else:
-                text = arg
-            for i, ch in enumerate(text, start=1):
-                tx, ty = self.px + i, self.py
-                if 0 <= tx < self.W and 0 <= ty < self.H and self.board[ty][tx] == EMPTY:
-                    self.board[ty][tx] = ch
-        return True
+        return parse_and_execute_command(self.last_dir, self.board, self.H, self.W, self.px, self.py)
+
 
