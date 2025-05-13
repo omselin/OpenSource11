@@ -14,17 +14,17 @@ def move(text: str,dx,dy,board,H,W):
         if 0 <= nx < W and 0 <= ny < H and board[ny][nx] == EMPTY:
             board[ny][nx] = ch
             board[y][x] = EMPTY
-    return True
+    return True,True
 def print_text(text: str,px,py,board,H,W):
     for i, ch in enumerate(text, start=1):
         tx, ty = px + i, py
         if 0 <= tx < W and 0 <= ty < H and board[ty][tx] == EMPTY:
             board[ty][tx] = ch
-    return True
+    return True,True
 def assignment(variable_map:dict,variable_list:list,value):
     for i in range(len(variable_list)-1,-1,-1):
         if variable_list[i].isalpha():
             variable_map[variable_list[i]]= value
         else:
-            raise ValueError(f"Invalid variable name '{variable_list[i]}'.")
-    return True
+            return True,False#,f"Invalid variable name '{variable_list[i]}'."
+    return True,True

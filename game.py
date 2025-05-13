@@ -75,8 +75,7 @@ class Game:
             print(''.join(row))
         print("\n화살표 이동    Q 종료")
     def _move_player(self, dx, dy):
-        YOU = SEMICOLON
-        player_positions = [(x, y) for y in range(self.H) for x in range(self.W) if self.board[y][x] == YOU]
+        player_positions = [(x, y) for y in range(self.H) for x in range(self.W) if self.board[y][x] == SEMICOLON]
         for px, py in player_positions:
             self._move(px, py, dx, dy)
         return self._run_code()
@@ -95,6 +94,8 @@ class Game:
                 self.board[ny][nx] = EMPTY
             else:
                 return True
+        if target == SEMICOLON:
+            return True
         # 플레이어 이동
         self.board[py][px] = EMPTY
         px, py = nx, ny
@@ -103,21 +104,19 @@ class Game:
 
     def _run_code(self):
         # 플레이어 왼쪽으로 이어진 문자 읽기
-        flag= True
- 
+        self.variable_map.clear()
         for y in range(self.H):
             for x in range(self.W):
-
                 if self.board[y][x] == SEMICOLON:
                     code = ''
                     tx = x - 1
                     while tx >= 0 and self.board[y][tx] != EMPTY and self.board[y][tx] != SEMICOLON:
                         code = self.board[y][tx] + code
                         tx -= 1
-                    flag &= parse_and_execute_command(self.last_dir, self.board,self.variable_map,code, self.H, self.W, x, y)
-                    
-        return flag
-
+                    GameOver,문법 = parse_and_execute_command(self.last_dir, self.board,self.variable_map,code, self.H, self.W, x, y)
+                    if not GameOver:
+                        return False
+        return True
 
 
 
