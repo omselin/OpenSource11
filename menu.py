@@ -84,7 +84,7 @@ class Menu:
                 returnValue = item.get('returnValue', None)
                 try:
                     map_inst = Map(lines,returnValue)
-                except Exception as e:
+                except RecursionError as e:
                     input(f"맵 로드 실패: {e}")
                     continue
 

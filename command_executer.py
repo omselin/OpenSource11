@@ -59,17 +59,17 @@ def drop(map: 'Map', text: str) -> Tuple[bool, bool]:
         for i, ch in enumerate(text):      # 새로운 위치 채우기
             board[y + dist][x + i] = ch
 
-    return changed, True
+    return changed
 def print_text(map:'Map',pos:tuple,text:str):
     for i, ch in enumerate(text, start=1):
         tx, ty = pos[0] + i, pos[1]
         if 0 <= tx < map.W and 0 <= ty < map.H:
             map.board[ty][tx] = ch
-    return True,True
+    return True
 def assignment(variable_map:'VariableMap',operand_list:list,value):
     for i in range(len(operand_list)-1,-1,-1):
         if operand_list[i].isalpha():
             variable_map.set_variable(operand_list[i], value)
         else:
-            return True,False#,f"Invalid variable name '{variable_list[i]}'."
-    return True,True
+            raise SyntaxError(f"Invalid variable name: {operand_list[i]}")
+    return True

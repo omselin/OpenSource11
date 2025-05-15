@@ -84,7 +84,10 @@ class VariableMap:
             if t == 'NUMBER':
                 return int(v)
             if t == 'VAR':
-                return self.variables.get(v, 0)
+                if v in self.variables:
+                    return self.variables[v]
+                else:
+                    raise NameError(f"정의되지 않은 변수: '{v}'")
             if t in ('PLUS', 'MINUS'):
                 val = parse_primary()
                 return +val if t == 'PLUS' else -val
