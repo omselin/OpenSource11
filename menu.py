@@ -81,5 +81,11 @@ class Menu:
                     continue
                 # MapData에서 name, locked 없이 lines만 사용해 Map 인스턴스 생성
                 lines = item.get('lines', [])
-                map_inst = Map(lines)
+                returnValue = item.get('returnValue', None)
+                try:
+                    map_inst = Map(lines,returnValue)
+                except Exception as e:
+                    input(f"맵 로드 실패: {e}")
+                    continue
+
                 Game(map_inst).start()

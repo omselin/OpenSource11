@@ -61,7 +61,6 @@ class Game:
     def start(self):
         if os.name == 'nt':
             os.system('cls')
-        interpret(self.map)
         self.map.render()
         while True:
             if key_pressed():

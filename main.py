@@ -23,7 +23,8 @@ def read_map_data(file_path: str) -> Dict[str, Dict[str, Any]]:
         else:
             lines = raw_data.splitlines()
         locked = bool(entry.get("locked", False))
-        maps_dict[name] = {'lines': lines, 'locked': locked}
+        returnValue = entry.get("returnValue", None)
+        maps_dict[name] = {'lines': lines, 'locked': locked,'returnValue': returnValue}
     return maps_dict
 
 

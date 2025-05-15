@@ -11,14 +11,16 @@ class Map:
     EMPTY = ' '
     PLAYER = ';'
 
-    def __init__(self, raw_data: List[str]):
+    def __init__(self, raw_data: List[str],returnValue):
         lines = raw_data
         self.H = len(lines)
         self.W = max(len(line) for line in lines) if lines else 0
         self.board = [list(line.ljust(self.W, self.EMPTY)) for line in lines]
+        self.returnValue=returnValue
         # UNDO/REDO 스택
         self._history: List[List[List[str]]] = []
-        self._future: List[List[List[str]]] = []    
+        self._future: List[List[List[str]]] = []   
+        interpret(self) # 이거 에러처리해야함
 
 
     def _save_state(self):

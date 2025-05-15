@@ -50,7 +50,7 @@ def interpretline(
 
         # --- 일반 명령 실행 ---
         else:
-            GameOver, 문법 = parse_and_execute_command(
+            GameOver, 실행여부 = parse_and_execute_command(
                 map,
                 variable_map,
                 code,
@@ -71,4 +71,6 @@ def interpret(map: 'Map') -> bool:
     for pc in range(map.H):
         if not interpretline(map, pc, vm):
             return False
+        
+
     return True

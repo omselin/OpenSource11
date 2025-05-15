@@ -10,7 +10,16 @@ DIR = {'UP': (0, -1), 'DOWN': (0, 1), 'LEFT': (-1, 0), 'RIGHT': (1, 0)}
 
 def parse_and_execute_command(map:'Map',variable_map:'VariableMap',code, pos:tuple):
     if code == 'return':
-        return False,True
+        if map.returnValue is None:
+            return False,True
+        else:
+            return True,True
+    if code.startswith("return_"):
+        if variable_map.get_value(code[7:])==map.returnValue:
+            return False,True
+        else:
+            return True,True
+    
     # move("..."), 문자열 길이 2 이상 지원
     if code.startswith('drop(') and code.endswith(')'):
         arg = code[5:-1]
