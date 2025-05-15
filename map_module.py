@@ -106,11 +106,12 @@ class Map:
         self._save_state()
         return True
 
-    def render(self) -> None:
+    def render(self,log="                                             ") -> None:
         print("\033[0;0H", end='')  # 커서 위치 초기화
         for row in self.board:
             print(''.join(row))
         print("\n화살표 이동    Q:종료  Z:UNDO  X:REDO")
+        print(log)
 
     # 외부에서 호출할 수 있는 UNDO/REDO 메서드
     def perform_undo(self) -> bool:

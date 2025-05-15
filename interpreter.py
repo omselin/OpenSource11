@@ -50,12 +50,17 @@ def interpretline(
 
         # --- 일반 명령 실행 ---
         else:
-            GameOver, 실행여부 = parse_and_execute_command(
-                map,
-                variable_map,
-                code,
-                pos=(x, pc)
-            )
+            try:
+                GameOver, 실행여부 = parse_and_execute_command(
+                    map,
+                    variable_map,
+                    code,
+                    pos=(x, pc)
+                )
+            except SyntaxError as e:
+                continue
+            except Exception as e:
+                raise e
             if not GameOver:
                 return False
 

@@ -127,7 +127,7 @@
         "                                       ",
         "     print(r);                                  ",
         "                                       ",
-        "while(r!=0);  r=r-1;     print(r);      ",
+        "while(r!=110) ;  r=r-1;     print(r);      ",
         "                                       ",
         "                                       ",
         "                                       ",

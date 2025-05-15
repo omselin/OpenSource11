@@ -77,7 +77,13 @@ class Game:
                     continue
                 if ch in DIR:
                     dx, dy = DIR[ch]
-                    result=self.map.move_and_exe(dx, dy)
+                    try:
+                        result=self.map.move_and_exe(dx, dy)
+                    except RecursionError as e:
+                        self.map.perform_undo()
+                        self.map._future.clear()
+                        self.map.render(f"Error: {e}")
+                        continue
                     self.map.render()
                     if not result:
                         break
