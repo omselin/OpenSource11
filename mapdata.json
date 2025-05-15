@@ -2,16 +2,16 @@
   "maps": [
     {
       "name": "return",
-      "returnValue":1,
+      "returnValue": null,
       "locked": false,
       "data": [
         ";                                      ",
         "                                       ",
         "                                       ",
         "                                       ",
-        "                 1                      ",
         "                                       ",
-        "              return_                   ",
+        "                                       ",
+        "              return                   ",
         "                                       ",
         "                                       ",
         "                                       "
@@ -19,7 +19,7 @@
     },
     {
       "name": "push",
-      "returnValue":null,
+      "returnValue": null,
       "locked": false,
       "data": [
         ";                                      ",
@@ -35,16 +35,33 @@
       ]
     },
     {
-      "name": "print",
-      "returnValue":null,
+      "name": "cantpush",
+      "returnValue": null,
       "locked": false,
       "data": [
         ";                                      ",
         "                                       ",
         "                                       ",
-        "              r    ###                 ",
-        "             p int(\"r\")              ",
-        "                   ###                 ",
+        "                                       ",
+        "                                       ",
+        "                t                      ",
+        "              re#urn                   ",
+        "                                       ",
+        "                                       ",
+        "                                       "
+      ]
+    },
+    {
+      "name": "print",
+      "returnValue": null,
+      "locked": false,
+      "data": [
+        ";                                      ",
+        "                                       ",
+        "                                       ",
+        "##                                     ",
+        "print(\"r\")                           ",
+        "                                       ",
         "                                       ",
         "               e u                     ",
         "                                       ",
@@ -53,23 +70,23 @@
     },
     {
       "name": "drop",
-      "returnValue":null,
+      "returnValue": null,
       "locked": false,
       "data": [
-        "         ;drop(\"return\")             ",
+        "           ;drop(\"return\")           ",
         "                                       ",
         "                                       ",
         "                                       ",
         "                                       ",
         "                                       ",
-        "                                       ", 
         "                                       ",
-        "                                       "  
+        "                                       ",
+        "                                       "
       ]
     },
     {
       "name": "drop2",
-      "returnValue":null,
+      "returnValue": null,
       "locked": false,
       "data": [
         "retur#          ;                      ",
@@ -78,22 +95,22 @@
         "                                       ",
         "      n                                ",
         "                                       ",
-        "                                       ", 
+        "                                       ",
         "                                       ",
         "     #drop(\"retur\")                  "
       ]
     },
     {
       "name": "assign",
-      "returnValue":null,
+      "returnValue": null,
       "locked": false,
       "data": [
-        "r=\"u\";##                             ",
-        "########                               ",
+        "r=\"eu\"                               ",
         "########                               ",
         "                                       ",
         "                                       ",
-        "        print(r)         e;            ",
+        "                                       ",
+        "        print(r);;                     ",
         "                                       ",
         "                                       ",
         "                                       ",
@@ -101,17 +118,17 @@
       ]
     },
     {
-      "name": "assign2",
-      "returnValue":null,
+      "name": "return_1",
+      "returnValue": 1,
       "locked": false,
       "data": [
-        " = u  ##                               ",
+        ";                                      ",
         "                                       ",
         "                                       ",
         "                                       ",
         "                                       ",
-        "print(\" \");           re;            ",
         "                                       ",
+        "              return_1                 ",
         "                                       ",
         "                                       ",
         "                                       "
@@ -119,15 +136,15 @@
     },
     {
       "name": "test",
-      "returnValue":null,
+      "returnValue": null,
       "locked": false,
       "data": [
         " r=10;  ##                             ",
         "                                       ",
         "                                       ",
-        "     print(h);                                  ",
+        "     print(h);                         ",
         "                                       ",
-        "while(r!=110) ;  r=r-1;     print(r);      ",
+        "while(r!=0) ;  r=r-1;     print(r);    ",
         "                                       ",
         "                                       ",
         "                                       ",

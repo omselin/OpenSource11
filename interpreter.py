@@ -11,13 +11,16 @@ def interpretline(
     map: 'Map',
     pc: int,
     variable_map: VariableMap,
-    start_x: int = 0
+    start_x: int = 0,
+    recursionlimit=100
 ) -> bool:
     """
     한 줄(pc)에서 start_x 위치부터 오른쪽으로 ';' 명령어 해석.
     if: False 시 해당 줄 남은 명령 스킵 (True 리턴)
     while: 조건이 True인 동안 start_x=x+1 위치부터 재귀적으로 실행
     """
+    if recursionlimit<0:
+        raise RecursionError("무한루프 발생!!")
     for x in range(start_x, map.W):
         if map.board[pc][x] != SEMICOLON:
             continue
@@ -32,20 +35,27 @@ def interpretline(
         # --- if 처리 ---
         if code.startswith('if(') and code.endswith(')'):
             cond = code[3:-1].strip()
-            if not variable_map.get_value(cond):
-                # 조건 거짓 → 이 줄 나머지 건너뛰고 성공 리턴
+            try:
+                condition=variable_map.get_value(cond)
+            except:
+                continue
+            if not condition:
+                # 이 줄 나머지 건너뛰고 성공 리턴
                 return True
-
         # --- while 처리 (재귀 호출 사용) ---
         elif code.startswith('while(') and code.endswith(')'):
             cond = code[6:-1].strip()
             # 조건이 True인 동안, 줄의 나머지(start_x=x+1부터) 재귀 실행
-            if variable_map.get_value(cond):
-                if not interpretline(map, pc, variable_map, start_x=x+1):
+            try:
+                condition = variable_map.get_value(cond)
+            except:
+                continue
+            if condition:
+                if not interpretline(map, pc, variable_map, start_x=x+1,recursionlimit=recursionlimit-1):
                     return False
-                if not interpretline(map, pc, variable_map, x-len(code)-1):
+                if not interpretline(map, pc, variable_map, x-len(code)-1,recursionlimit=recursionlimit-1):
                     return False
-            # while 끝나면 더 이상 이 줄의 뒤쪽 명령 안 실행
+                # while 끝나면 더 이상 이 줄의 뒤쪽 명령 안 실행
             return True
 
         # --- 일반 명령 실행 ---

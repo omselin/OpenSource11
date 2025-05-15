@@ -66,7 +66,7 @@ class Game:
             if key_pressed():
                 ch = get_key()
                 if ch.lower() == 'q':
-                    break
+                    return False
                 if ch.lower() == 'z':  # UNDO
                     if self.map.perform_undo():
                         self.map.render()
@@ -86,6 +86,6 @@ class Game:
                         continue
                     self.map.render()
                     if not result:
-                        break
+                        return True
         print("게임 종료")
 

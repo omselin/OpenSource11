@@ -15,7 +15,7 @@ def drop(map: 'Map', text: str) -> Tuple[bool, bool]:
     반환: (changed, True)
     """
     if not text:
-        return False, True
+        return True
 
     L = len(text)
     board = map.board
@@ -59,7 +59,7 @@ def drop(map: 'Map', text: str) -> Tuple[bool, bool]:
         for i, ch in enumerate(text):      # 새로운 위치 채우기
             board[y + dist][x + i] = ch
 
-    return changed
+    return True
 def print_text(map:'Map',pos:tuple,text:str):
     for i, ch in enumerate(text, start=1):
         tx, ty = pos[0] + i, pos[1]

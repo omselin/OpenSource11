@@ -1,5 +1,7 @@
 import os
 import sys
+import json
+from map_module import Map
 from game import Game
 from typing import Dict, Any
 
@@ -32,60 +34,119 @@ except ImportError:
         dr, _, _ = select.select([sys.stdin], [], [], 0)
         return bool(dr)
 
-# menu.py
-import os
-import sys
-from map_module import Map
-from game import Game
-from typing import Dict, Any
-
-# 키 입력 처리 생략
-# ... get_key(), key_pressed() 유지 ...
-
 def clear():
     os.system('cls' if os.name == 'nt' else 'clear')
 
 class Menu:
-    def __init__(self, maps: Dict[str, Dict[str, Any]]):
+    def __init__(self, mapdata_file: str = "mapdata.json"):
         """
-        maps: {name: {'lines': List[str], 'locked': bool}}
+        mapdata_file: 경로 to JSON file for persistence
         """
-        self.maps = maps
-        self.titles = list(maps.keys())
+        self.mapdata_file = mapdata_file
+        # 파일에서 직접 맵 데이터 로드
+        try:
+            with open(self.mapdata_file, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+        except Exception as e:
+            print(f"맵 데이터 로드 실패: {e}")
+            sys.exit(1)
+
+        # JSON 구조를 내부 dict로 변환
+        self.maps: Dict[str, Dict[str, Any]] = {}
+        for m in data.get('maps', []):
+            name = m.get('name')
+            if not name:
+                continue
+            self.maps[name] = {
+                'data': m.get('data', []),
+                'locked': m.get('locked', True),
+                'returnValue': m.get('returnValue', None)
+            }
+        self.titles = list(self.maps.keys())
         self.current = 0
+        # 화면에 표시할 윈도우 범위
+        self.window_start = 0
+        self.page_size = 10
+
+    def _unlock_next(self):
+        next_idx = self.current + 1
+        if next_idx < len(self.titles):
+            nxt = self.titles[next_idx]
+            if self.maps[nxt].get('locked', True):
+                self.maps[nxt]['locked'] = False
+                # 파일 업데이트
+                try:
+                    with open(self.mapdata_file, 'r+', encoding='utf-8') as f:
+                        data = json.load(f)
+                        for entry in data.get('maps', []):
+                            if entry.get('name') == nxt:
+                                entry['locked'] = False
+                                break
+                        f.seek(0)
+                        json.dump(data, f, ensure_ascii=False, indent=2)
+                        f.truncate()
+                except Exception as e:
+                    print(f"맵 데이터 업데이트 실패: {e}")
 
     def run(self):
+        total = len(self.titles)
+        clear()
         while True:
-            clear()
-            print("=== 맵 선택 ===\n")
-            for idx, title in enumerate(self.titles):
+            print("\033[0;0H", end='')
+            print("=== 맵 선택 ===")
+            # 현재 윈도우 범위에 해당하는 맵만 출력
+            end = self.window_start + self.page_size
+            display = self.titles[self.window_start:end]
+            for idx, title in enumerate(display):
+                global_idx = self.window_start + idx
                 item = self.maps[title]
-                sel = "▶" if idx == self.current else "  "
+                sel = "▶" if global_idx == self.current else "  "
                 lock = " [Locked]" if item.get('locked', False) else ""
-                print(f"{sel} {title}{lock}")
+                print(f"{sel} {title}{lock}                                                         ")
             print("\n↑/↓: 이동    →: 선택    Q: 종료")
 
+            # 키 입력 대기
             while not key_pressed():
                 pass
             ch = get_key()
             if ch.lower() == 'q':
                 return
 
-            if ch == 'UP' and self.current > 0:
-                self.current -= 1
-            elif ch == 'DOWN' and self.current < len(self.titles) - 1:
-                self.current += 1
+            if ch == 'UP':
+                if self.current > 0:
+                    self.current -= 1
+                    # 윈도우 위로 스크롤
+                    if self.current < self.window_start:
+                        self.window_start = max(0, self.window_start - 1)
+            elif ch == 'DOWN':
+                if self.current < total - 1:
+                    self.current += 1
+                    # 윈도우 아래로 스크롤
+                    if self.current >= self.window_start + self.page_size:
+                        max_start = max(0, total - self.page_size)
+                        self.window_start = min(self.window_start + 1, max_start)
             elif ch == 'RIGHT':
-                item = self.maps[self.titles[self.current]]
-                if item.get('locked', False):
-                    continue
-                # MapData에서 name, locked 없이 lines만 사용해 Map 인스턴스 생성
-                lines = item.get('lines', [])
-                returnValue = item.get('returnValue', None)
-                try:
-                    map_inst = Map(lines,returnValue)
-                except RecursionError as e:
-                    input(f"맵 로드 실패: {e}")
-                    continue
+                # 현 위치 맵 실행
+                while True:
+                    title = self.titles[self.current]
+                    item = self.maps[title]
+                    if item.get('locked', False):
+                        break
+                    try:
+                        map_inst = Map(item['data'], item['returnValue'])
+                    except RecursionError as e:
+                        input(f"맵 로드 실패: {e}")
+                        break
 
-                Game(map_inst).start()
+                    r = Game(map_inst).start()
+                    # 클리어 후 다음 맵 잠금 해제
+                    self._unlock_next()
+                    if not r:
+                        break
+                    # 다음 인덱스로 이동
+                    self.current += 1
+                    # 다음 맵이 없거나 잠겨있으면 중단
+                    if self.current >= total or self.maps[self.titles[self.current]].get('locked', False):
+                        break
+                # 메뉴로 복귀
+                continue

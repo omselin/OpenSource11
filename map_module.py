@@ -102,8 +102,7 @@ class Map:
             self.board[y][x] = self.EMPTY
             nx, ny = x + dx, y + dy
             self.board[ny][nx] = self.PLAYER
-        # 이동 후 상태 저장
-        self._save_state()
+
         return True
 
     def render(self,log="                                             ") -> None:
