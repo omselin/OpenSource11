@@ -3,13 +3,14 @@ import os
 from typing import List, Tuple
 import copy
 from interpreter import interpret
+from colorama import Cursor
 
 class Map:
     """
     맵 데이터를 관리하고, 보드 상태, 렌더링, UNDO/REDO를 책임지는 클래스
     """
     EMPTY = ' '
-    PLAYER = ';'
+    SEMICOLON = ';'
 
     def __init__(self,name:str, raw_data: List[str],returnValue):
         self.name=name
@@ -91,9 +92,9 @@ class Map:
         self.board[ny][nx] = self.EMPTY
         return True
     def move_and_exe(self,dx:int,dy:int):
-        self._save_state()
-        self.move_player(dx,dy)
-        return interpret(self)
+        self._save_state()# 현재 상태 저장
+        self.move_player(dx,dy)# 플레이어 이동
+        return interpret(self)# # 명령어 해석 및 실행 여기서 RecursionError 발생 가능
     def move_player(self, dx: int, dy: int) -> bool:
         players = self.find_players()
         for x, y in players:
@@ -107,11 +108,11 @@ class Map:
         return True
 
     def render(self,log="                                             ") -> None:
-        print("\033[0;0H", end='')  # 커서 위치 초기화
+        print(Cursor.POS(1, 1), end='')  # 커서 위치 초기화
         for row in self.board:
             print(''.join(row))
         print("\n화살표 이동    Q:종료  Z:UNDO  X:REDO")
-        print("현재 맵:", self.name)
+        print("맵:", self.name)
         print("리턴값:", self.returnValue)
         print(log)
 

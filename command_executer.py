@@ -3,8 +3,6 @@ if TYPE_CHECKING:
     from map_module import Map
     from variablemap import VariableMap
 
-EMPTY, PLAYER_CHAR = ' ', ';'
-DIR = {'UP': (0, -1), 'DOWN': (0, 1), 'LEFT': (-1, 0), 'RIGHT': (1, 0)}
 
 def drop(map: 'Map', text: str) -> Tuple[bool, bool]:
     """
@@ -64,6 +62,8 @@ def print_text(map:'Map',pos:tuple,text:str):
     for i, ch in enumerate(text, start=1):
         tx, ty = pos[0] + i, pos[1]
         if 0 <= tx < map.W and 0 <= ty < map.H:
+            if map.board[ty][tx] == '#' or map.board[ty][tx] == ';':
+                continue
             map.board[ty][tx] = ch
     return True
 def assignment(variable_map:'VariableMap',operand_list:list,value):
@@ -73,3 +73,8 @@ def assignment(variable_map:'VariableMap',operand_list:list,value):
         else:
             raise SyntaxError(f"Invalid variable name: {operand_list[i]}")
     return True
+
+# ⬇️ 오유민님 작업 시작 위치 (이 아래에만 작성해 주세요. 이 주석은 나중에 병합 기준이 되므로 수정하지 마세요.)
+# ⬇️ 이기상님 작업 시작 위치 (이 아래에만 작성해 주세요. 이 주석은 나중에 병합 기준이 되므로 수정하지 마세요.)
+# ⬇️ 이현우님 작업 시작 위치 (이 아래에만 작성해 주세요. 이 주석은 나중에 병합 기준이 되므로 수정하지 마세요.)
+# ⬇️ Farhan Latiff님 작업 시작 위치 (이 아래에만 작성해 주세요. 이 주석은 나중에 병합 기준이 되므로 수정하지 마세요.)

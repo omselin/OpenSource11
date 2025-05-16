@@ -13,7 +13,7 @@ class VariableMap:
         - 문자열 리터럴('...', "...")
         - 숫자 리터럴
         - 변수명 조회
-        - 수식 및 조건식: &&, ||, (), >, <, ==, !=, +, -, *, / 등
+        - 수식 및 조건식: &&, ||, (), >, <, ==, !=, +, -, *, /, % 등
         문법 오류가 나면 SyntaxError를 발생시킨다.
         """
         txt = text.strip()
@@ -28,25 +28,26 @@ class VariableMap:
 
         # ───── 토큰화 ─────
         token_spec = [
-    ('NUMBER',   r"\d+"),      # <- 양의 정수만
-    ('AND',      r"&&"),
-    ('OR',       r"\|\|"),
-    ('EQ',       r"=="),
-    ('NE',       r"!="),
-    ('LE',       r"<="),
-    ('GE',       r">="),
-    ('LT',       r"<"),
-    ('GT',       r">"),
-    ('PLUS',     r"\+"),
-    ('MINUS',    r"-"),
-    ('STAR',     r"\*"),
-    ('SLASH',    r"/"),
-    ('LPAREN',   r"\("),
-    ('RPAREN',   r"\)"),
-    ('VAR',      r"[A-Za-z_]\w*"),
-    ('SKIP',     r"[ \t]+"),
-    ('MISMATCH', r"."),
-]
+            ('NUMBER',   r"\d+"),      # <- 양의 정수만
+            ('AND',      r"&&"),
+            ('OR',       r"\|\|"),
+            ('EQ',       r"=="),
+            ('NE',       r"!="),
+            ('LE',       r"<="),
+            ('GE',       r">="),
+            ('LT',       r"<"),
+            ('GT',       r">"),
+            ('PLUS',     r"\+"),
+            ('MINUS',    r"-"),
+            ('STAR',     r"\*"),
+            ('SLASH',    r"/"),
+            ('PERCENT',  r"%"),
+            ('LPAREN',   r"\("),
+            ('RPAREN',   r"\)"),
+            ('VAR',      r"[A-Za-z_]\w*"),
+            ('SKIP',     r"[ \t]+"),
+            ('MISMATCH', r"."),
+        ]
         tok_regex = '|'.join(f"(?P<{n}>{p})" for n, p in token_spec)
 
         tokens = []
@@ -93,13 +94,18 @@ class VariableMap:
                 return +val if t == 'PLUS' else -val
             raise SyntaxError("잘못된 수식 요소")
 
-        # term   → primary ( (*|/) primary )*
+        # term   → primary ( (*|/|%) primary )*
         def parse_term():
             val = parse_primary()
-            while peek() in ('STAR', 'SLASH'):
+            while peek() in ('STAR', 'SLASH', 'PERCENT'):
                 op, _ = advance()
                 rhs = parse_primary()
-                val = val * rhs if op == 'STAR' else val / rhs
+                if op == 'STAR':
+                    val = val * rhs
+                elif op == 'SLASH':
+                    val = val / rhs
+                else:  # PERCENT
+                    val = val % rhs
             return val
 
         # arith  → term ( (+|-) term )*
@@ -154,4 +160,4 @@ class VariableMap:
 # 사용 예:
 # vm = VariableMap()
 # vm.set_variable('x',5)
-# vm.get_value('x>3 && (x<10 || x==2)')
+# print(vm.get_value('10 % 3'))  # 결과: 1
