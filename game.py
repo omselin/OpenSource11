@@ -1,8 +1,7 @@
-import os
 import sys
 from map_module import Map
 from interpreter import interpret
-from variablemap import VariableMap
+
 
 # ────────── 키 입력 처리 (Windows / Unix) ──────────
 try:
@@ -35,7 +34,7 @@ except ImportError:
 
 # ────────── 상수 및 유틸 ──────────
 EMPTY, SEMICOLON = ' ', ';'
-DIR = {'UP': (0, -1), 'DOWN': (0, 1), 'LEFT': (-1, 0), 'RIGHT': (1, 0)}
+
 
 def clear_screen():
     # 화면 전체 지우고 커서 좌상단으로
@@ -45,10 +44,6 @@ def clear_screen():
 
 
 
-# 키 입력 처리 (생략, 기존 코드 유지)
-# ... get_key(), key_pressed() 구현 그대로 ...
-
-DIR = {'UP': (0,-1),'DOWN':(0,1),'LEFT':(-1,0),'RIGHT':(1,0)}
 
 DIR = {'UP': (0, -1), 'DOWN': (0, 1), 'LEFT': (-1, 0), 'RIGHT': (1, 0)}
 
@@ -59,13 +54,12 @@ class Game:
 
 
     def start(self):
-        if os.name == 'nt':
-            os.system('cls')
+        clear_screen()
         self.map.render()
         while True:
             if key_pressed():
                 ch = get_key()
-                if ch.lower() == 'q':
+                if ch.lower() == 'q':# QUIT
                     return False
                 if ch.lower() == 'z':  # UNDO
                     if self.map.perform_undo():
@@ -79,13 +73,15 @@ class Game:
                     dx, dy = DIR[ch]
                     try:
                         result=self.map.move_and_exe(dx, dy)
+                        # 실패하는 경우는 아직은 무한루프뿐임
                     except RecursionError as e:
                         self.map.perform_undo()
                         self.map._future.clear()
                         self.map.render(f"Error: {e}")
+                        #실패한 경우 다시 되돌리기기
                         continue
                     self.map.render()
                     if not result:
                         return True
-        print("게임 종료")
+
 
