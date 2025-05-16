@@ -40,8 +40,8 @@ class Map:
         """이전 상태로 되돌리기"""
         if len(self._history) <= 1:
             return False
-        self._future.append(self._history.pop())
-        prev = self._history[-1]
+        self._future.append(copy.deepcopy(self.board))
+        prev = self._history.pop()
         self._restore_state(prev)
         return True
 
@@ -49,8 +49,8 @@ class Map:
         """UNDO 이후 다시 앞으로"""
         if not self._future:
             return False
+        self._history.append(copy.deepcopy(self.board))
         state = self._future.pop()
-        self._history.append(state)
         self._restore_state(state)
         return True
 
@@ -59,7 +59,7 @@ class Map:
             (x, y)
             for y in range(self.H)
             for x in range(self.W)
-            if self.board[y][x] == self.PLAYER
+            if self.board[y][x] == self.SEMICOLON
         ]
 
     def move_block(self, x: int, y: int, dx: int, dy: int) -> bool:
@@ -80,7 +80,7 @@ class Map:
             return True
 
         # 고정 블록('#')이나 플레이어(';')은 못 밀음
-        if target == '#' or target == self.PLAYER:
+        if target == '#' or target == self.SEMICOLON:
             return False
 
         # 재귀적으로 그 앞 블록을 먼저 밀어 비워 본다
@@ -103,7 +103,7 @@ class Map:
             # 플레이어 이동
             self.board[y][x] = self.EMPTY
             nx, ny = x + dx, y + dy
-            self.board[ny][nx] = self.PLAYER
+            self.board[ny][nx] = self.SEMICOLON
 
         return True
 
