@@ -7,7 +7,10 @@ if TYPE_CHECKING:
 EMPTY, PLAYER_CHAR = ' ', ';'
 DIR = {'UP': (0, -1), 'DOWN': (0, 1), 'LEFT': (-1, 0), 'RIGHT': (1, 0)}
 
-
+'''
+명령어를 분류하고 분해만 하는 함수
+처리는 command_executer.py에서 함
+'''
 def parse_and_execute_command(map:'Map',variable_map:'VariableMap',code, pos:tuple):
     if code == 'return':
         if map.returnValue is None:
@@ -24,7 +27,7 @@ def parse_and_execute_command(map:'Map',variable_map:'VariableMap',code, pos:tup
     if code.startswith('drop(') and code.endswith(')'):
         arg = code[5:-1]
         text=variable_map.get_value(arg)
-        return ce.drop(map,text)
+        return ce.drop(map,str(text))
     # print("..."), 인용부호 처리
     if code.startswith('print(') and code.endswith(')'):
         arg = code[6:-1]

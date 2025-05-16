@@ -118,6 +118,43 @@
       ]
     },
     {
+      "name": "assign2",
+      "returnValue": null,
+      "locked": false,
+      "data": [
+        "a=\"return\";#                               ",
+        "############                               ",
+        "                                          ",
+        "  a##                                       ",
+        "b=b;#                                       ",
+        "c=c;#                                       ",
+        "d=d;#                                       ",
+        "e=e;#                                       ",
+        "f=f;#                                       ",
+        "g=g;#                                       ",
+        "h= ;#        print(h);                      "
+      ]
+    },
+    
+    {
+      "name": "순차처리",
+      "returnValue": null,
+      "locked": false,
+      "data": [
+        "a=\"return\";#                               ",
+        "############                               ",
+        "                                          ",
+        "  a##print(b);                              ",
+        "b=b;#print(c);                              ",
+        "c=c;#print(d);                               ",
+        "d=d;#print(e);                               ",
+        "e=e;#print(f);                               ",
+        "f=f;#print(g);                      ",
+        "g=g;#print(h);                               ",
+        "h= ;#print( );                               "
+      ]
+    },
+    {
       "name": "return_1",
       "returnValue": 1,
       "locked": false,
@@ -135,17 +172,132 @@
       ]
     },
     {
-      "name": "test",
+      "name": "return_2",
+      "returnValue": 2,
+      "locked": false,
+      "data": [
+        "a=1;#                                  ",         
+        "#####                                  ",
+        "                                       ",
+        "                                       ",
+        "                                       ",
+        "               +a                      ",
+        "              return_1;                ",
+        "                                       ",
+        "                                       ",
+        "                                       "
+      ]
+    },
+    {
+      "name": "수식",
+      "returnValue": 1234567890,
+      "locked": false,
+      "data": [
+        "                                       ",
+        "                                         ",
+        "               *                         ",
+        "               +                         ",
+        "               -                        ",
+        "        print(7 3);                     ",
+        "                                       ",
+        "k=                                       ",
+        "##########                             ",
+        "return_k;#                             "
+      ]
+    },
+    {
+      "name": "if",
       "returnValue": null,
       "locked": false,
       "data": [
-        " r=10;  ##                             ",
+        "if(0);############                                         ",         
+        "if(1==2);#########            return;                   ",
+        "if(1&&0);#########                                      ",
+        "if(1-1);##########                                      ",
+        "a=2;if(a==1);#####                                      ",
+        "if(\"a\"!=\"a\");#####                                      ",
+        "if(1||0);#########                                      "
+      ]
+    },
+    {
+      "name": "if2",
+      "returnValue": null,
+      "locked": false,
+      "data": [
+        "k=0;#                                   ",
+        "#####            ###                    ",
+        "                 #n####                 ",
+        "k=1 ;           ;     #                 ",
+        "###################   #                 ",
+        "                                        ",
+        "                   #                    ",
+        "#######            ############         ",                  
+        "if(k);#retur       #drop(\"n\");#"
+      ]
+    },
+    {
+      "name": "if2-2",
+      "returnValue": null,
+      "locked": false,
+      "data": [
+        "                                        ",
+        "                 ###                    ",
+        "                 #n####                 ",
+        "k=0;           ;      #                 ",
+        "###################   #                 ",
+        "                                        ",
+        "                   #                    ",
+        "#######            ############         ",                  
+        "if(k);#retur       #drop(\"n\");#"
+      ]
+    },
+    {
+      "name": "while",
+      "returnValue": -25,
+      "locked": false,
+      "data": [
+        "r=0;#                                  ",         
+        "#####                                  ",
         "                                       ",
         "                                       ",
-        "     print(h);                         ",
         "                                       ",
-        "while(r!=0) ;  r=r-1;     print(r);    ",
         "                                       ",
+        "                                       ",
+        "                                       ",
+        "                                       ",
+        "while(1) ; r=r-1 ; return_r ;          "
+      ]
+    },
+    {
+      "name": "while2",
+      "returnValue": 2,
+      "locked": false,
+      "data": [
+        "k=10;while(k!=0);k=k-1;drop(k);########",         
+        "#######################################",
+        "                                       ",
+        "  1  2  2  3  4  5  6  7  8  9   ",                
+        "                                       ",
+        "     ;                               ",
+        "                              ",
+        "                                       ",
+        "                                       ",
+        "                                       "
+      ]
+    },
+    {
+      "name": "while2asd",
+      "returnValue": 2,
+      "locked": false,
+      "data": [
+        "k=10;",
+        "while(k!=0);k=k-1;drop(k);#        ",         
+        "#######################################",
+        "                                       ",
+        "  1  2  2  3  4  5  6  7  8  9   ",                
+        "                                       ",
+        "     ;                               ",
+        "                              ",
         "                                       ",
         "                                       ",
         "                                       "

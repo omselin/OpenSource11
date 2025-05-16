@@ -11,7 +11,8 @@ class Map:
     EMPTY = ' '
     PLAYER = ';'
 
-    def __init__(self, raw_data: List[str],returnValue):
+    def __init__(self,name:str, raw_data: List[str],returnValue):
+        self.name=name
         lines = raw_data
         self.H = len(lines)
         self.W = max(len(line) for line in lines) if lines else 0
@@ -110,6 +111,8 @@ class Map:
         for row in self.board:
             print(''.join(row))
         print("\n화살표 이동    Q:종료  Z:UNDO  X:REDO")
+        print("현재 맵:", self.name)
+        print("리턴값:", self.returnValue)
         print(log)
 
     # 외부에서 호출할 수 있는 UNDO/REDO 메서드

@@ -53,7 +53,7 @@ def interpretline(
             if condition:
                 if not interpretline(map, pc, variable_map, start_x=x+1,recursionlimit=recursionlimit-1):
                     return False
-                if not interpretline(map, pc, variable_map, x-len(code)-1,recursionlimit=recursionlimit-1):
+                if not interpretline(map, pc, variable_map, x-len(code),recursionlimit=recursionlimit-1):
                     return False
                 # while 끝나면 더 이상 이 줄의 뒤쪽 명령 안 실행
             return True

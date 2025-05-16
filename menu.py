@@ -133,7 +133,7 @@ class Menu:
                     if item.get('locked', False):
                         break
                     try:
-                        map_inst = Map(item['data'], item['returnValue'])
+                        map_inst = Map(title,item['data'], item['returnValue'])
                     except RecursionError as e:
                         input(f"맵 로드 실패: {e}")
                         break
@@ -144,9 +144,12 @@ class Menu:
                     if not r:
                         break
                     # 다음 인덱스로 이동
-                    self.current += 1
                     # 다음 맵이 없거나 잠겨있으면 중단
-                    if self.current >= total or self.maps[self.titles[self.current]].get('locked', False):
+                    if self.current+1 >= total or self.maps[self.titles[self.current+1]].get('locked', False):
                         break
+                    self.current += 1
+                if self.window_start+self.page_size <= self.current:
+                    self.window_start = self.current+1 - self.page_size
                 # 메뉴로 복귀
+                clear()
                 continue
