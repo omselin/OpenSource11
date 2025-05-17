@@ -1,7 +1,7 @@
 import sys
 from map_module import Map
 from interpreter import interpret
-
+import os
 
 # ────────── 키 입력 처리 (Windows / Unix) ──────────
 try:
@@ -54,7 +54,8 @@ class Game:
 
 
     def start(self):
-        clear_screen()
+        if os.name == 'nt':
+            os.system('cls')
         self.map.render()
         while True:
             if key_pressed():
