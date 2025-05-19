@@ -76,5 +76,22 @@ def assignment(variable_map:'VariableMap',operand_list:list,value):
 # ⬇️ 이호영님 작업 시작 위치 (이 아래에만 작성해 주세요. 이 주석은 나중에 병합 기준이 되므로 수정하지 마세요.)
 # ⬇️ 오유민님 작업 시작 위치 (이 아래에만 작성해 주세요. 이 주석은 나중에 병합 기준이 되므로 수정하지 마세요.)
 # ⬇️ 이기상님 작업 시작 위치 (이 아래에만 작성해 주세요. 이 주석은 나중에 병합 기준이 되므로 수정하지 마세요.)
+def execute_swap(map: 'Map', args: list, out) -> bool:
+    """
+    map.board 전체에서 문자 a와 b를 전역적으로 교환한다.
+    위치 쌍이 아니라 모든 문자 자체를 바꾼다.
+    """
+    a, b = args
+    board = map.board
+    H, W = map.H, map.W
+
+    for y in range(H):
+        for x in range(W):
+            if board[y][x] == a:
+                board[y][x] = b
+            """elif board[y][x] == b:
+                board[y][x] = a
+            """
+    return True
 # ⬇️ 이현우님 작업 시작 위치 (이 아래에만 작성해 주세요. 이 주석은 나중에 병합 기준이 되므로 수정하지 마세요.)
 # ⬇️ Farhan Latiff님 작업 시작 위치 (이 아래에만 작성해 주세요. 이 주석은 나중에 병합 기준이 되므로 수정하지 마세요.)

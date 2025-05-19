@@ -325,16 +325,18 @@
     
     
     {
-      "name": "이기상",
-      "returnValue": null,
-      "locked": false,
-      "data": [
-        ";                                      ",
-        "                                       ",
-        "                                       ",
-        "                                       ",
-        "                                       ",
-        "                                       ",
+        "name": "swap_puzzle_1",
+        "returnValue": 1,
+        "locked": false,
+        "data": [
+        "                              #      ",
+        "        +           swap(' ','-')    ",
+        "                              #      ",
+        "   print(' ')             3 2        ", 
+        "              return_;               ", 
+        "                                     ", 
+        "                                     ", 
+        
         " 자신의 이름이 표시된 블록의 바로 위에서만   ",
         " 작업해 주세요.                          ",
         " 이 블록은 병합의 기준이 되는 블록이니      ",                      
