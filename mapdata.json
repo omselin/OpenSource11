@@ -289,6 +289,25 @@
       ]
     },
     {
+      "name": "drop3",
+      "returnValue": null,
+      "locked": false,
+      "data": [
+        "drop(\"n\");#     a#                   ",
+        "###########   cb #                     ",
+        "              bcc#      drop(\" \");   ",
+        "              b  #                     ",
+        "                 #                     ",
+        "                 #           abc       ",
+        "retur            n           abc       ",
+        "##############   #           ###       ",
+        "             #   #                     ",
+        "             #   #                     "
+      ]
+    },
+    
+    
+    {
       "name": "이호영",
       "returnValue": null,
       "locked": false,
