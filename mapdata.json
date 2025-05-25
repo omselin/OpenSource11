@@ -326,12 +326,15 @@
       "returnValue": null,
       "locked": false,
       "data": [
-        "startword                          ",
-        "                                   ",
-        "######                             ",
-        "                                   ",
-        "   scramble(\"startword\");          ",
-        "                  ;                "
+        "                                     ",
+        "          staart word                ",
+        "                                     ",
+        "                                     ",
+        "############                         ",
+        "                                     ",
+        "         ;                           ",  
+        "   scramble(\"startword\")           ",  
+        "                                     "
       ]
     },
     {
