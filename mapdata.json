@@ -323,18 +323,20 @@
 
     {
       "name": "scramble_puzzle",
-      "returnValue": null,
+      "returnValue": "aaaaba",
       "locked": false,
       "data": [
-        "                                     ",
-        "          staart word                ",
-        "                                     ",
-        "                                     ",
-        "############                         ",
-        "                                     ",
-        "         ;                           ",  
-        "   scramble(\"startword\")           ",  
-        "                                     "
+        "                                        ",
+        "                 ;                      ",
+        "                                #####   ",
+        "k=\"aa aaa\"                    #aabaa  ",
+        "##                              #####   ",
+        "                                        ",
+        "         ###########                    ",  
+        "         #scramble(\"aabaa\")           ",  
+        "         ###########                    ",
+        "##########                              ",
+        "return_k;#                              "
       ]
     },
     {
