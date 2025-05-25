@@ -78,10 +78,12 @@ def assignment(variable_map:'VariableMap',operand_list:list,value):
 import random
 
 def scramble_oh(map, args, out):
+    """
+    맵의 각 줄에서 주어진 target 문자열을 찾아 글자를 무작위로 섞은 후 교환환
+    """
 
     target = args[0]
 
-    #print(target)
     for y in range(map.H):
        #line = map.board[y]
        line = ''.join(map.board[y])
@@ -92,8 +94,6 @@ def scramble_oh(map, args, out):
             scrambled_str = ''.join(scrambled)
             line = line.replace(target, scrambled_str)
             map.board[y] = list(line)  # 문자열 → 리스트 (리스트 유지!)
-            #print(f"Line {y} updated: {map.board[y]}")  # 추가: 결과 출력
-            #print(map.board[y])
 
     return True
 
