@@ -17,7 +17,6 @@
         "                                       "
       ]
     },
-
     {
       "name": "push",
       "returnValue": null,
@@ -136,7 +135,6 @@
         "h= ;#        print(h);                      "
       ]
     },
-
     {
       "name": "순차처리",
       "returnValue": null,
@@ -285,7 +283,6 @@
         "print(\"=\")                                                 ",
         "return_a;#                                                   ",
         "return_b;#                                                    "
-
       ]
     },
     {
@@ -305,8 +302,6 @@
         "             #   #                     "
       ]
     },
-    
-    
     {
       "name": "이호영",
       "returnValue": null,
@@ -322,6 +317,21 @@
         " 작업해 주세요.                          ",
         " 이 블록은 병합의 기준이 되는 블록이니      ",
         " 수정하시면 안됩니다.                     "
+      ]
+    },
+
+
+    {
+      "name": "scramble_puzzle",
+      "returnValue": null,
+      "locked": false,
+      "data": [
+        "startword                          ",
+        "                                   ",
+        "######                             ",
+        "                                   ",
+        "   scramble(\"startword\");          ",
+        "                  ;                "
       ]
     },
     {
@@ -341,8 +351,6 @@
         " 수정하시면 안됩니다.                     "
       ]
     },
-
-
     {
       "name": "swap1",
       "returnValue": 1,
@@ -360,7 +368,7 @@
         "                                     "
       ]
     },
-        {
+    {
       "name": "swap2",
       "returnValue": 1,
       "locked": false,
@@ -392,7 +400,7 @@
         " eturn                               "
       ]
     },
-  {
+    {
       "name": "delete1",
       "returnValue": null,
       "locked": false,
@@ -492,7 +500,5 @@
         " 수정하시면 안됩니다.                     "
       ]
     }
-
-
   ]
 }
