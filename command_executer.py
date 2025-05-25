@@ -76,5 +76,42 @@ def assignment(variable_map:'VariableMap',operand_list:list,value):
 # ⬇️ 이호영님 작업 시작 위치 (이 아래에만 작성해 주세요. 이 주석은 나중에 병합 기준이 되므로 수정하지 마세요.)
 # ⬇️ 오유민님 작업 시작 위치 (이 아래에만 작성해 주세요. 이 주석은 나중에 병합 기준이 되므로 수정하지 마세요.)
 # ⬇️ 이기상님 작업 시작 위치 (이 아래에만 작성해 주세요. 이 주석은 나중에 병합 기준이 되므로 수정하지 마세요.)
+def swap(map: 'Map', args: list, out) -> bool:
+    """
+    map.board 전체에서 문자 a를 b로 전역적으로 교환한다.
+    """
+    a, b = args
+    board = map.board
+    H, W = map.H, map.W
+
+    # 보드 복사하면서 교환
+    for y in range(H):
+        for x in range(W):
+            if board[y][x] == a:
+                board[y][x] = '__TEMP__'
+
+    for y in range(H):
+        for x in range(W):
+            if board[y][x] == '__TEMP__':
+                board[y][x] = b
+    
+    return True
+def delete(map: 'Map', args: list, out) -> bool:
+    """
+    delete(char): 보드 전체에서 해당 문자를 공백(" ")으로 전환
+    """
+    if not args:
+        raise SyntaxError("delete 명령은 delete(char) 형식이어야 합니다")
+    target = args[0]
+
+    board = map.board
+    H, W = map.H, map.W
+
+    for y in range(H):
+        for x in range(W):
+            if board[y][x] == target:
+                board[y][x] = " "
+
+    return True
 # ⬇️ 이현우님 작업 시작 위치 (이 아래에만 작성해 주세요. 이 주석은 나중에 병합 기준이 되므로 수정하지 마세요.)
 # ⬇️ Farhan Latiff님 작업 시작 위치 (이 아래에만 작성해 주세요. 이 주석은 나중에 병합 기준이 되므로 수정하지 마세요.)
