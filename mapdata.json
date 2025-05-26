@@ -320,7 +320,25 @@
       ]
     },
 
-
+    {
+      "name": "scramble_puzzle0",
+      "returnValue": null,
+      "locked": false,
+      "data": [
+        "                                        ",
+        "                    ;                   ",
+        "                                        ",
+        "scramble(\"er\")                        ",
+        "###################                     ",
+        "                                        ",
+        "                                        ",
+        "                 ################       ",
+        "                      er     turn       ",
+        "                 ################       ",
+        "                                        ",
+        "                                        "
+      ]
+    },
     {
       "name": "scramble_puzzle1",
       "returnValue": "aaaaba",
