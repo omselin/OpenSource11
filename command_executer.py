@@ -106,13 +106,15 @@ def teleport_oh(map, args, out):
     height = len(new_board)
     width = len(new_board[0]) if height > 0 else 0
 
+    n = 0
     # 주인공 위치 찾기
     for y in range(height):
         for x in range(width):
-            if new_board[y][x] == ";":
+            if new_board[y][x] == ";" and new_board[y][x-6] == "t":
                 hero_pos = (y, x)
+                n = 1
                 break#첫 번째로 발견된 ; 위치만 기억
-        if hero_pos:
+        if n == 1:
             break  # hero_pos를 찾았으면 y 루프도 종료
 
     # 맵 전체 탐색: target 문자 찾기
