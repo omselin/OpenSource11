@@ -111,6 +111,9 @@ def teleport_oh(map, args, out):
         for x in range(width):
             if new_board[y][x] == ";":
                 hero_pos = (y, x)
+                break#첫 번째로 발견된 ; 위치만 기억
+        if hero_pos:
+            break  # hero_pos를 찾았으면 y 루프도 종료
 
     # 맵 전체 탐색: target 문자 찾기
     found = False
