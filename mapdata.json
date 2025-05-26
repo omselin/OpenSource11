@@ -376,6 +376,24 @@
         "return_k;#                                 "                         
      ]
     },
+    {
+      "name": "teleport1",
+      "returnValue": null,
+      "locked": false,
+      "data": [
+        "                               ;         ",
+        "                 a                       ",
+        "      teleport(\" \")                    ",
+        "                                         ",
+        "####################                     ",
+        "        a           #                    ",
+        "                    #                    ",  
+        "  r        u        #                    ",  
+        "    e  t     r      #                    ",
+        "               n    #                    ",
+        "                    #                    "
+      ]
+    },
 
     {
       "name": "오유민",

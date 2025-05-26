@@ -79,7 +79,7 @@ import random
 
 def scramble_oh(map, args, out):
     """
-    맵의 각 줄에서 주어진 target 문자열을 찾아 글자를 무작위로 섞은 후 교환환
+    맵의 각 줄에서 주어진 target 문자열을 찾아 글자를 무작위로 섞은 후 교환
     """
 
     target = args[0]
@@ -95,6 +95,50 @@ def scramble_oh(map, args, out):
             line = line.replace(target, scrambled_str)
             map.board[y] = list(line)  # 문자열 → 리스트 (리스트 유지!)
 
+    return True
+
+def teleport_oh(map, args, out):
+    """
+    함수 안의 문자 확인 후 맵 훑어보고 같은 문자가 있는 경우 그 문자 옆으로 주인공(;) 위치 이동
+    """
+    target = args[0]
+    new_board = [list(row) for row in map.board]
+    height = len(new_board)
+    width = len(new_board[0]) if height > 0 else 0
+
+    # 주인공 위치 찾기
+    for y in range(height):
+        for x in range(width):
+            if new_board[y][x] == ";":
+                hero_pos = (y, x)
+
+    # 맵 전체 탐색: target 문자 찾기
+    found = False
+    for y in range(height):
+        for x in range(width):
+            if new_board[y][x] == target:
+                # 같은 라인에 있는 경우는 제외(함수 안 문자 옆으로 이동 방지)
+                if hero_pos and (y == hero_pos[0]):
+                    continue
+                # 주변 좌표 확인 (왼쪽, 오른쪽, 위, 아래)
+                directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+                for dy, dx in directions:
+                    ny, nx = y + dy, x + dx
+                    if 0 <= ny < height and 0 <= nx < width:
+                        if new_board[ny][nx] == " ":  # 빈 칸일 때
+                            # 기존 위치 비우기
+                            hy, hx = hero_pos
+                            new_board[hy][hx] = " "
+                            # 새로운 위치로 이동
+                            new_board[ny][nx] = ";"
+                            found = True
+                            break
+                if found:
+                    break
+        if found:
+            break
+
+    map.board = new_board
     return True
 
 # ⬇️ 이기상님 작업 시작 위치 (이 아래에만 작성해 주세요. 이 주석은 나중에 병합 기준이 되므로 수정하지 마세요.)
