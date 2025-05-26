@@ -395,7 +395,7 @@
      ]
     },
     {
-      "name": "teleport1",
+      "name": "teleport0",
       "returnValue": null,
       "locked": false,
       "data": [
@@ -410,6 +410,27 @@
         "    e  t     r      #                    ",
         "               n    #                    ",
         "                    #                    "
+      ]
+    },
+    {
+      "name": "teleport1",
+      "returnValue": null,
+      "locked": false,
+      "data": [
+        "b=\"g\";#             #                      ",
+        "#######             #                      ",
+        "                    #                      ",
+        "  ;                 #                ######",
+        "    a               #print(b)        #b= ##",
+        "teleport(\" \")       ###########      #c=c;#",
+        "                    #                #d=d;#",
+        "#####################                #e=e;#",
+        "       g            # a              #f=f;#",
+        "                    #                ###g#",  
+        "  r        u        #                    ",  
+        "    e  t     r      #                    ",
+        "               n    #                     ",
+        "                    #  teleport(\" \")   "
       ]
     },
     {

@@ -110,7 +110,7 @@ def teleport_oh(map, args, out):
     # 주인공 위치 찾기
     for y in range(height):
         for x in range(width):
-            if new_board[y][x] == ";" and new_board[y][x-6] == "t":
+            if new_board[y][x] == ";" and new_board[y][x-6] == "t": #teleport(\" \") = 기본함수틀
                 hero_pos = (y, x)
                 n = 1
                 break#첫 번째로 발견된 ; 위치만 기억
