@@ -476,6 +476,25 @@
       ]
     },
     {
+      "name": "explode-return",
+      "returnValue": null,
+      "locked": false,
+      "data": [
+        "                                                ",
+        "   explode('w')                                 ",
+        "                                                ",
+        "                                                ",
+        "              ;                                  ",
+        "                                                ",
+        "                 w w w w                        ",
+        "                                                ",
+        "                                                ",
+        "         #####################                  ",
+        "         #      return       #                  ",
+        "         #####################                  "
+      ]
+    },
+    {
       "name": "Farhan Latiff",
       "returnValue": null,
       "locked": false,

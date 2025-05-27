@@ -115,3 +115,28 @@ def delete(map: 'Map', args: list, out) -> bool:
     return True
 # ⬇️ 이현우님 작업 시작 위치 (이 아래에만 작성해 주세요. 이 주석은 나중에 병합 기준이 되므로 수정하지 마세요.)
 # ⬇️ Farhan Latiff님 작업 시작 위치 (이 아래에만 작성해 주세요. 이 주석은 나중에 병합 기준이 되므로 수정하지 마세요.)
+def explode(map: 'Map', ch: str) -> bool:
+    """
+    Removes all blocks in a 3×3 area centered on every instance of `ch`.
+    """
+    if not ch:
+        return False
+
+    board = map.board
+    H, W = map.H, map.W
+    positions = []
+
+    # Find all positions of the target character
+    for y in range(H):
+        for x in range(W):
+            if board[y][x] == ch:
+                positions.append((y, x))
+
+    for y, x in positions:
+        for dy in [-1, 0, 1]:
+            for dx in [-1, 0, 1]:
+                ny, nx = y + dy, x + dx
+                if 0 <= ny < H and 0 <= nx < W:
+                    board[ny][nx] = map.EMPTY
+
+    return True
