@@ -17,7 +17,6 @@
         "                                       "
       ]
     },
-
     {
       "name": "push",
       "returnValue": null,
@@ -136,7 +135,6 @@
         "h= ;#        print(h);                      "
       ]
     },
-
     {
       "name": "순차처리",
       "returnValue": null,
@@ -285,7 +283,6 @@
         "print(\"=\")                                                 ",
         "return_a;#                                                   ",
         "return_b;#                                                    "
-
       ]
     },
     {
@@ -305,8 +302,6 @@
         "             #   #                     "
       ]
     },
-    
-    
     {
       "name": "이호영",
       "returnValue": null,
@@ -341,8 +336,6 @@
         " 수정하시면 안됩니다.                     "
       ]
     },
-
-
     {
       "name": "swap1",
       "returnValue": 1,
@@ -360,7 +353,7 @@
         "                                     "
       ]
     },
-        {
+    {
       "name": "swap2",
       "returnValue": 1,
       "locked": false,
@@ -392,7 +385,7 @@
         " eturn                               "
       ]
     },
-  {
+    {
       "name": "delete1",
       "returnValue": null,
       "locked": false,
@@ -476,7 +469,7 @@
       ]
     },
     {
-      "name": "explode-return",
+      "name": "explode1",
       "returnValue": null,
       "locked": false,
       "data": [
@@ -492,6 +485,26 @@
         "         #####################                  ",
         "         #      return       #                  ",
         "         #####################                  "
+      ]
+    },
+    {
+      "name": "explode2",
+      "returnValue": null,
+      "locked": false,
+      "data": [
+        "###################################",
+        "# # # # # # # # # # # # # # # # # #",
+        "#    WreturnW                     #",
+        "# # #W#W#W#W# # # # # # # # # # # #",
+        "#                 ;               #",
+        "# # # # # # # # # # # # # # # # # #",
+        "#               explode(' ')      #",
+        "# # # # # # # # # # # # # # # # # #",
+        "#                                 #",
+        "# # # # # # # # # # # # # # # # # #",
+        "#   print(\"B\")                  #",
+        "# # # # # # # # # # # # # # # # # #",
+        "#                                 #"
       ]
     },
     {
@@ -511,7 +524,5 @@
         " 수정하시면 안됩니다.                     "
       ]
     }
-
-
   ]
 }
