@@ -283,7 +283,7 @@
         "                                       ",
         "                                       ",
         "                                       ",
-        "while(1);  r=r-1;;  return_r          "
+        "while(1) ;  r=r-1 ;;  return_r          "
       ]
     },
     {

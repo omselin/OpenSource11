@@ -113,8 +113,10 @@ class Map:
 
     def render(self,log="                                             ") -> None:
         print("\033[1;1H", end='')  # 커서 위치 초기화
+        print(' '+'_'*(len(self.board[0])))
         for row in self.board:
-            print(''.join(row))
+            print('|'+''.join(row)+'|')
+        print(' '+'‾'*(len(self.board[0])))
         print("\n화살표 이동    Q:종료  Z:UNDO  X:REDO")
         print("맵:", self.name)
         print("리턴값:", self.returnValue)
