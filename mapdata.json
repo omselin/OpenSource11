@@ -17,7 +17,6 @@
         "                                       "
       ]
     },
-
     {
       "name": "push",
       "returnValue": null,
@@ -153,7 +152,6 @@
         "h= ;#        print(h);                      "
       ]
     },
-
     {
       "name": "순차처리",
       "returnValue": null,
@@ -302,12 +300,25 @@
         "print(\"=\")                                                 ",
         "return_a;#                                                   ",
         "return_b;#                                                    "
-
       ]
     },
-    
-    
-    
+    {
+      "name": "drop3",
+      "returnValue": null,
+      "locked": false,
+      "data": [
+        "drop(\"n\");#     a#                   ",
+        "###########   cb #                     ",
+        "              bcc#      drop(\" \");   ",
+        "              b  #                     ",
+        "                 #                     ",
+        "                 #           abc       ",
+        "retur            n           abc       ",
+        "##############   #           ###       ",
+        "             #   #                     ",
+        "             #   #                     "
+      ]
+    },
     {
       "name": "이호영",
       "returnValue": null,
@@ -325,6 +336,144 @@
         " 수정하시면 안됩니다.                     "
       ]
     },
+
+    {
+      "name": "scramble1",
+      "returnValue": null,
+      "locked": false,
+      "data": [
+        "                                        ",
+        "                    ;                   ",
+        "                                        ",
+        "scramble(\"er\")                        ",
+        "###################                     ",
+        "                                        ",
+        "                                        ",
+        "                 ################       ",
+        "                      er     turn       ",
+        "                 ################       ",
+        "                                        ",
+        "                                        "
+      ]
+    },
+    {
+      "name": "scramble2",
+      "returnValue": "aaaaba",
+      "locked": false,
+      "data": [
+        "                                        ",
+        "                 ;                      ",
+        "                                #####   ",
+        "k=\"aa aaa\"                    #aabaa  ",
+        "##                              #####   ",
+        "                                        ",
+        "         ###########                    ",  
+        "         #scramble(\"aabaa\")           ",  
+        "         ###########                    ",
+        "##########                              ",
+        "return_k;#                              "
+      ]
+    },
+    {
+      "name": "scramble3",
+      "returnValue": "puzzle",
+      "locked": false,
+      "data": [
+        "                                           ",
+        "print(\" \")                               ",
+        "                                           ",
+        "              ##  ##       ##  ##          ",
+        "              #lbbb#       #zaaa#          ",
+        "              ##  ##       ##  ##          ",
+        "                                           ",
+        "              ##  ##       ##  ##          ",
+        "              #ubbb#       #paaa#          ",
+        "              ##  ##       ##  ##          ",
+        "                                           ",
+        "                                           ",
+        "###  ######################################",
+        "                                          #",
+        "                                          #",
+        "####      ##                              #",
+        "k=\"       \"                               #",
+        "####      ##                e             #",
+        "                                          #",
+        "                                    ;     #",
+        "############################################",
+        "                                           ",
+        "          p u z l                 a  b     ",
+        "                                           ",
+        "         ###########     # ######## ##     ", 
+        "         #scramble(\" ;  \") #print(\" \") ",  
+        "         ###########     # ######## ##     ",
+        "                                           ",
+        "##########                                 ",
+        "return_k;#                                 "                         
+     ]
+    },
+    {
+      "name": "teleport1",
+      "returnValue": null,
+      "locked": false,
+      "data": [
+        "                               ;         ",
+        "                 a                       ",
+        "      teleport(\" \")                    ",
+        "                                         ",
+        "####################                     ",
+        "        a           #                    ",
+        "                    #                    ",  
+        "  r        u        #                    ",  
+        "    e  t     r      #                    ",
+        "               n    #                    ",
+        "                    #                    "
+      ]
+    },
+    {
+      "name": "teleport2",
+      "returnValue": null,
+      "locked": false,
+      "data": [
+        "b=\"g\";#             #                      ",
+        "#######             #                      ",
+        "                    #                      ",
+        "  ;                 #                ######",
+        "    a               #print(b)        #b= ##",
+        "teleport(\" \")       ###########      #c=c;#",
+        "                    #                #d=d;#",
+        "#####################                #e=e;#",
+        "       g            # a              #f=f;#",
+        "                    #                ###g#",  
+        "  r        u        #                    ",  
+        "    e  t     r      #                    ",
+        "               n    #                     ",
+        "                    #  teleport(\" \")   "
+      ]
+    },
+    {
+      "name": "teleport3",
+      "returnValue": null,
+      "locked": false,
+      "data": [
+        "K=0;# drop('2')     #  drop('3')          #",
+        "#####               #                     #",
+        "                    #                     #",
+        "                     teleport(\"  \")       #",
+        "      ;             #      #              #",
+        "                    #    2                #",
+        "teleport(\"  \")      #    #           1    #",
+        "#####################  K=0       #        #",
+        "if(K);drop('4');###                       #",
+        "###########################################",  
+        "      4             #4                    #",  
+        "                    ############          #",
+        "                3   #             r       #",
+        "                    #    r     t       n  #",
+        "                    #      e       u      #",
+        "teleport(\" \")     #                       #"
+     ]
+    },
+
     {
       "name": "오유민",
       "returnValue": null,
@@ -342,8 +491,6 @@
         " 수정하시면 안됩니다.                     "
       ]
     },
-
-
     {
       "name": "swap1",
       "returnValue": 1,
@@ -361,7 +508,7 @@
         "                                     "
       ]
     },
-        {
+    {
       "name": "swap2",
       "returnValue": 1,
       "locked": false,
@@ -393,7 +540,7 @@
         " eturn                               "
       ]
     },
-  {
+    {
       "name": "delete1",
       "returnValue": null,
       "locked": false,
@@ -493,7 +640,5 @@
         " 수정하시면 안됩니다.                     "
       ]
     }
-
-
   ]
 }
