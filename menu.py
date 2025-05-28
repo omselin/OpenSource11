@@ -4,7 +4,7 @@ import json
 from map_module import Map
 from game import Game
 from typing import Dict, Any
-from colorama import Cursor
+
 
 # ────────── 키 입력 처리 (Windows / Unix) ──────────
 try:
@@ -93,7 +93,7 @@ class Menu:
         total = len(self.titles)
         clear()
         while True:
-            print(Cursor.POS(1, 1), end='')
+            print("\033[1;1H", end='')
             print("=== 맵 선택 ===")
             # 현재 윈도우 범위에 해당하는 맵만 출력
             end = self.window_start + self.page_size
@@ -135,11 +135,12 @@ class Menu:
                         break
                     try:
                         map_inst = Map(title,item['data'], item['returnValue'])
+                        r = Game(map_inst).start()
                     except RecursionError as e:
                         input(f"맵 로드 실패: {e}")
                         break
 
-                    r = Game(map_inst).start()
+                    
                     # 클리어 후 다음 맵 잠금 해제
                     self._unlock_next()
                     if not r:

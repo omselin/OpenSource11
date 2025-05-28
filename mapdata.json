@@ -101,6 +101,23 @@
       ]
     },
     {
+      "name": "drop3",
+      "returnValue": null,
+      "locked": false,
+      "data": [
+        "drop(\"n\");#     a#                   ",
+        "###########   cb #                     ",
+        "              bcc#      drop(\" \");   ",
+        "              b  #                     ",
+        "                 #                     ",
+        "                 #           abc       ",
+        "retur            n           abc       ",
+        "##############   #           ###       ",
+        "             #   #                     ",
+        "             #   #                     "
+      ]
+    },
+    {
       "name": "assign",
       "returnValue": null,
       "locked": false,
@@ -259,12 +276,12 @@
         "#####                                  ",
         "                                       ",
         "                                       ",
+        "                 #                      ",
         "                                       ",
         "                                       ",
-        "        ;       ;          ;              ",
         "                                       ",
         "                                       ",
-        "while(1)   r=r-1   return_r           "
+        "while(1) ;  r=r-1 ;;  return_r          "
       ]
     },
     {
@@ -283,23 +300,6 @@
         "print(\"=\")                                                 ",
         "return_a;#                                                   ",
         "return_b;#                                                    "
-      ]
-    },
-    {
-      "name": "drop3",
-      "returnValue": null,
-      "locked": false,
-      "data": [
-        "drop(\"n\");#     a#                   ",
-        "###########   cb #                     ",
-        "              bcc#      drop(\" \");   ",
-        "              b  #                     ",
-        "                 #                     ",
-        "                 #           abc       ",
-        "retur            n           abc       ",
-        "##############   #           ###       ",
-        "             #   #                     ",
-        "             #   #                     "
       ]
     },
     {
