@@ -135,11 +135,12 @@ class Menu:
                         break
                     try:
                         map_inst = Map(title,item['data'], item['returnValue'])
+                        r = Game(map_inst).start()
                     except RecursionError as e:
                         input(f"맵 로드 실패: {e}")
                         break
 
-                    r = Game(map_inst).start()
+                    
                     # 클리어 후 다음 맵 잠금 해제
                     self._unlock_next()
                     if not r:
