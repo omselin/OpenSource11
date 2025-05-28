@@ -1,9 +1,8 @@
-# map.py
-import os
+
 from typing import List, Tuple
 import copy
 from interpreter import interpret
-from colorama import Cursor
+
 
 class Map:
     """
@@ -113,7 +112,7 @@ class Map:
         return True
 
     def render(self,log="                                             ") -> None:
-        print(Cursor.POS(1, 1), end='')  # 커서 위치 초기화
+        print("\033[1;1H", end='')  # 커서 위치 초기화
         for row in self.board:
             print(''.join(row))
         print("\n화살표 이동    Q:종료  Z:UNDO  X:REDO")

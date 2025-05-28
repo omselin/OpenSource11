@@ -1,6 +1,5 @@
 import sys
 from map_module import Map
-from interpreter import interpret
 import os
 
 # ────────── 키 입력 처리 (Windows / Unix) ──────────
