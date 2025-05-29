@@ -1,7 +1,6 @@
 from menu import Menu
-from map_module import Map
 import sys
-from typing import List, Dict, Any
+
 
 # 열 수 있는 최대 크기 예시: 120x40 (가로 x 세로)
 
