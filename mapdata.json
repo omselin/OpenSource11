@@ -532,6 +532,23 @@
       ]
     },
     {
+      "name": "inverse1",
+      "returnValue": null,
+      "locked": false,
+      "data": [
+        "       #############                                ",
+        "      #q=\"nruter\";#                               ",
+        "       #############                                ",
+        "                        ;                           ",
+        "      inverse(q)                                    ",
+        "                                                    ",
+        "                                                    ",
+        "                                                    ",
+        "                                                    ",
+        "                                                    "
+      ]
+    },
+    {
       "name": "Farhan Latiff",
       "returnValue": null,
       "locked": false,

@@ -63,7 +63,16 @@ def parse_and_execute_command(map:'Map',variable_map:'VariableMap',code, pos:tup
         else:
             ch = variable_map.get_value(arg)
         return ce.explode(map, ch)
+    
+    if code.startswith('inverse(') and code.endswith(')'):
+        arg = code[8:-1].strip() 
+        text = variable_map.get_value(arg)
+        return ce.inverse(map, pos, str(text)) 
+
+
+
 
                 
         
     raise SyntaxError(f"Unknown command: {code}")
+
