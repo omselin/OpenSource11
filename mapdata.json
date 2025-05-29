@@ -549,6 +549,44 @@
       ]
     },
     {
+      "name": "inverse2",
+      "returnValue": null,
+      "locked": false,
+      "data": [
+        "       #############                       ###################      ",
+        "      #q=                                  #B     return    B#      ",
+        "       #############                o      ###################      ",
+        "                        ;       l                                   ",
+        "                                                 e         e        ",
+        "     ( )                      d                                     ",
+        "                 x                              '   '               ",
+        "                                       B                            ",
+        "############             \"          \"              p              ",
+        "inverse(q);#                                                        "
+      ]
+    },
+    {
+      "name": "inverse3",
+      "returnValue": null,
+      "locked": false,
+      "data": [
+        "       ####                  ###################   #x#     ",
+        "      #swap(' ', ' ')        #B     return    B#           ",
+        "       ####                  ###################           ",
+        "                                                           ",
+        "                                                           ",
+        "                                                           ",
+        "      ;                                                    ",
+        "                                                           ",
+        "                          1 0                              ", 
+        "                                                           ",
+        "                                                           ",
+        "                                                           ",
+        "########                                 p #########   ####",
+        "if(0);##                                  #explode('B');#  "
+      ]
+    },
+    {
       "name": "Farhan Latiff",
       "returnValue": null,
       "locked": false,
