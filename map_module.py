@@ -37,7 +37,7 @@ class Map:
 
     def undo(self) -> bool:
         """이전 상태로 되돌리기"""
-        if len(self._history) <= 1:
+        if len(self._history) <= 0:
             return False
         self._future.append(copy.deepcopy(self.board))
         prev = self._history.pop()
@@ -95,8 +95,10 @@ class Map:
         self._save_state()
         return result
     def move_and_exe(self,dx:int,dy:int):
-        if self._history[-1]!=self.board:#변화가 없을때
+        if len(self._history)==0: 
             self._save_state()# 현재 상태 저장
+        elif self._history[-1]!=self.board:#변화가 없을때
+            self._save_state()
         self.move_player(dx,dy)# 플레이어 이동
         return interpret(self)# # 명령어 해석 및 실행 여기서 RecursionError 발생 가능
     def move_player(self, dx: int, dy: int) -> bool:
