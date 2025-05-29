@@ -508,6 +508,30 @@
       ]
     },
     {
+      "name": "explode3",
+      "returnValue": null,
+      "locked": false,
+      "data": [
+        "                                                 ",
+        "         explode('x')                            ",
+        "                    #######                      ",
+        "        w     w     #     #         w            ",
+        "              w     #     #     w                ",
+        "     #############  #     #  #############       ",
+        "     #     drop(' ')     swap('x',' ')   #       ",
+        "     #              x     explode('w')   #       ",
+        "     #                                   #        ",
+        "     ############################        #       ",
+        "        w    w     w            ##########       ",
+        "                                                 ",
+        "                                                 ",
+        "  ##################            ;                ",
+        "  #     return     #                             ",
+        "  ##################                             ",
+        "                                                 "
+      ]
+    },
+    {
       "name": "Farhan Latiff",
       "returnValue": null,
       "locked": false,
