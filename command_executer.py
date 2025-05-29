@@ -144,7 +144,7 @@ def explode(map: 'Map', ch: str) -> bool:
 def inverse(map:'Map', pos:tuple, text:str):
     reversed_text = text[::-1] 
     for i, ch in enumerate(reversed_text):
-        tx, ty = pos[0] + i, pos[1] 
+        tx, ty = pos[0] + i+1, pos[1] 
         if 0 <= tx < map.W and 0 <= ty < map.H:
             if map.board[ty][tx] == '#' or map.board[ty][tx] == ';':
                 continue
