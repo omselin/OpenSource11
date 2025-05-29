@@ -117,38 +117,46 @@ def delete(map: 'Map', args: list, out) -> bool:
 # ⬇️ Farhan Latiff님 작업 시작 위치 (이 아래에만 작성해 주세요. 이 주석은 나중에 병합 기준이 되므로 수정하지 마세요.)
 def explode(map: 'Map', ch: str) -> bool:
     """
-    Removes all blocks in a 3×3 area centered on every instance of `ch`.
+    주어진 문자 `ch`가 존재하는 모든 위치를 중심으로 3x3 범위의 블록을 제거합니다.
     """
     if not ch:
-        return False
+        return False  # 문자가 없으면 아무 작업도 하지 않음
 
     board = map.board
     H, W = map.H, map.W
     positions = []
 
-    # Find all positions of the target character
+    # 주어진 문자의 위치를 모두 찾음
     for y in range(H):
         for x in range(W):
             if board[y][x] == ch:
                 positions.append((y, x))
 
+    # 각 위치를 중심으로 3x3 범위 내의 블록을 제거
     for y, x in positions:
         for dy in [-1, 0, 1]:
             for dx in [-1, 0, 1]:
                 ny, nx = y + dy, x + dx
                 if 0 <= ny < H and 0 <= nx < W:
-                    board[ny][nx] = map.EMPTY
+                    board[ny][nx] = map.EMPTY  # 빈 공간으로 설정
 
-    return True
+    return True  
+
 
 def inverse(map:'Map', pos:tuple, text:str):
-    reversed_text = text[::-1] 
+    """
+    주어진 문자열을 뒤집어서 (역순으로) 맵에 출력합니다.
+    시작 위치는 `pos`, 단 x좌표에 +3 만큼 이동한 위치부터 시작합니다.
+    벽 문자('#', ';')는 건너뜁니다.
+    """
+    reversed_text = text[::-1]  # 문자열 뒤집기
     for i, ch in enumerate(reversed_text):
-        tx, ty = pos[0] + i+3, pos[1] 
+        tx, ty = pos[0] + i + 3, pos[1]  # x좌표는 3만큼 오프셋 적용
         if 0 <= tx < map.W and 0 <= ty < map.H:
             if map.board[ty][tx] == '#' or map.board[ty][tx] == ';':
-                continue
-            map.board[ty][tx] = ch
+                continue  # 벽이면 건너뜀
+            map.board[ty][tx] = ch  # 문자를 보드에 기록
+
     return True
 
 
