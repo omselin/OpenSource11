@@ -116,7 +116,7 @@ class Map:
         print(' '+'_'*(len(self.board[0])))
         for row in self.board:
             buffer=""#출력속도를 위한 버퍼
-            print('|',end='')
+            buffer+='|'
             for char in row:
                 if char==';':
                     print(buffer,end="")
@@ -124,7 +124,8 @@ class Map:
                     print("\033[34m;\033[0m",end='')
                 else:
                     buffer+=char
-            print(buffer+'|')
+            buffer+='|'
+            print(buffer)
         print(' '+'‾'*(len(self.board[0])))
         print("\n화살표 이동    Q:종료  Z:UNDO  X:REDO")
         print("맵:", self.name)
