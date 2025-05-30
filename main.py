@@ -6,8 +6,9 @@ import sys
 
 if __name__ == "__main__":
     # 커서 숨기기
+
     sys.stdout.write("\033[?25l")
     sys.stdout.flush()
-    
+
     menu = Menu("mapdata.json")
     menu.run()
