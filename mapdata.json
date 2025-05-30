@@ -590,6 +590,40 @@
       ]
     },
     {
+      "name": "switch1",
+      "returnValue": null,
+      "locked": false,
+      "data": [
+        ";                                      ",
+        "                   n   t               ",
+        "                   u   e               ",
+        "           switch(' ',' ')             ",
+        "                                       ",
+        "                                       ",
+        "                                       ",
+        "                                       ",
+        "                                       ",
+        "           runert                      "
+      ]
+    },
+    {
+      "name": "switch2",
+      "returnValue": 100,
+      "locked": false,
+      "data": [
+        ";                                      ",
+        "switch(' ',' ')                        ",
+        "                      * - + 1 2        ",
+        "print( )                               ",
+        "                                       ",
+        "                                       ",
+        "                                       ",
+        "                                       ",
+        "#######################################",
+        "return_a+b*c-d#a=3;b=4;c=5;d=6;        "
+      ]
+    },
+    {
       "name": "이현우",
       "returnValue": null,
       "locked": false,
