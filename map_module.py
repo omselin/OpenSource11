@@ -3,6 +3,8 @@ from typing import List, Tuple
 import copy
 from interpreter import interpret,get_board_inf
 from inf import Inf
+import 출력관련
+
 
 
 class Map:
@@ -113,11 +115,11 @@ class Map:
             self.board[ny][nx] = self.SEMICOLON
 
         return True
-
-    def render(self, log="                                             ") -> None:
-        # 1) 커서 초기화
-        print("\033[1;1H", end='')
-
+    
+    def render(self, log=".                                             ") -> None:
+        
+        #log=x
+        출력관련.출력전처리(self.H+7)
         # 2) 맵 상단
         print(' ' + '_' * self.W)
 

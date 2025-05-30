@@ -4,6 +4,7 @@ import json
 from map_module import Map
 from game import Game
 from typing import Dict, Any
+import 출력관련
 
 
 # ────────── 키 입력 처리 (Windows / Unix) ──────────
@@ -93,7 +94,7 @@ class Menu:
         total = len(self.titles)
         clear()
         while True:
-            print("\033[1;1H", end='')
+            출력관련.출력전처리(13)
             print("=== 맵 선택 ===")
             # 현재 윈도우 범위에 해당하는 맵만 출력
             end = self.window_start + self.page_size
