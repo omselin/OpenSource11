@@ -1,7 +1,8 @@
 
 from typing import List, Tuple
 import copy
-from interpreter import interpret
+from interpreter import interpret,get_board_inf
+from inf import Inf
 
 
 class Map:
@@ -113,22 +114,58 @@ class Map:
 
         return True
 
-    def render(self,log="                                             ") -> None:
-        print("\033[1;1H", end='')  # 커서 위치 초기화
-        print(' '+'_'*(len(self.board[0])))
-        for row in self.board:
-            buffer=""#출력속도를 위한 버퍼
-            buffer+='|'
-            for char in row:
-                if char==';':
-                    print(buffer,end="")
-                    buffer=""
-                    print("\033[34m;\033[0m",end='')
+    def render(self, log="                                             ") -> None:
+        # 1) 커서 초기화
+        print("\033[1;1H", end='')
+
+        # 2) 맵 상단
+        print(' ' + '_' * self.W)
+
+        # 3) board_inf 계산
+        board_inf = get_board_inf(self)
+
+        # 4) 타입별 ANSI 컬러 매핑 (앞/뒤 reset 포함)
+        COLOR = {
+            Inf.NONE:      "\033[38;2;135;206;250m",  # 흰색
+            Inf.SEMICOLON: "\033[36m",  # 청록색색
+            Inf.OP:        "\033[33m",  # 노란색
+            Inf.FUNC:      "\033[38;5;229m",  # 연한노란색
+            Inf.CONTROL:   "\033[35m",  # 보라색
+            Inf.BOX:       "\033[90m",  # 밝은 회색 
+            Inf.STRING:    "\033[38;2;255;200;100m" ,#밝은은주황색
+
+        }
+        RESET = "\033[0m"
+
+        # 5) 각 행 출력
+        for i in range(self.H):
+            print('|', end='')
+
+            # 버퍼와 현재 타입
+            buffer = ''
+            prev_type = board_inf[i][0]
+
+            for j in range(self.W):
+                cur_type = board_inf[i][j]
+                ch = self.board[i][j]
+
+                # 타입이 바뀌면 그간 쌓인 buffer를 출력하고 초기화
+                if cur_type != prev_type:
+                    # 색 적용
+                    print(f"{COLOR[prev_type]}{buffer}{RESET}", end='')
+                    buffer = ch
+                    prev_type = cur_type
                 else:
-                    buffer+=char
-            buffer+='|'
-            print(buffer)
-        print(' '+'‾'*(len(self.board[0])))
+                    buffer += ch
+
+            # 마지막 버퍼 출력
+            print(f"{COLOR[prev_type]}{buffer}{RESET}", end='')
+            print('|')
+
+        # 6) 맵 하단
+        print(' ' + '‾' * self.W)
+
+        # 7) 상태창
         print("\n화살표 이동    Q:종료  Z:UNDO  X:REDO")
         print("맵:", self.name)
         print("리턴값:", self.returnValue)
