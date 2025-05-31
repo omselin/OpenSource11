@@ -1,5 +1,5 @@
 import sys
-from map_module import Map
+from map_module import Map,MapManager
 import os
 
 # ────────── 키 입력 처리 (Windows / Unix) ──────────
@@ -48,42 +48,42 @@ DIR = {'UP': (0, -1), 'DOWN': (0, 1), 'LEFT': (-1, 0), 'RIGHT': (1, 0)}
 
 class Game:
     def __init__(self, map:Map):
-        self.map = map
+        self.mapmanager = MapManager(map)
 
 
 
     def start(self):
         if os.name == 'nt':
             os.system('cls')
-        if not self.map.initialize():
+        if not self.mapmanager.initialize():
             return True
             
-        self.map.render()
+        self.mapmanager.render()
         while True:
             if key_pressed():
                 ch = get_key()
                 if ch.lower() == 'q':# QUIT
                     return False
                 if ch.lower() == 'z':  # UNDO
-                    if self.map.perform_undo():
-                        self.map.render()
+                    if self.mapmanager.undo():
+                        self.mapmanager.render()
                     continue
                 if ch.lower() == 'x':  # REDO
-                    if self.map.perform_redo():
-                        self.map.render()
+                    if self.mapmanager.redo():
+                        self.mapmanager.render()
                     continue
                 if ch in DIR:
                     dx, dy = DIR[ch]
                     try:
-                        result=self.map.move_and_exe(dx, dy)
+                        result=self.mapmanager.move_and_execute(dx, dy)
                         # 실패하는 경우는 아직은 무한루프뿐임
                     except RecursionError as e:
-                        self.map.perform_undo()
-                        self.map._future.clear()
-                        self.map.render(f"Error: {e}")
+                        self.mapmanager.perform_undo()
+                        self.mapmanager._future.clear()
+                        self.mapmanager.render(f"Error: {e}")
                         #실패한 경우 다시 되돌리기기
                         continue
-                    self.map.render()
+                    self.mapmanager.render()
                     if not result:
                         return True
 
