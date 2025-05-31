@@ -557,19 +557,19 @@
     },
     {
       "name": "delete3",
-      "returnValue": null,
+      "returnValue": 1,
       "locked": false,
       "data": [
-        " a                #                   ",
-        "# #   ####        #   delete(' ')     ",
-        "                  #   xxx             ",
-        "          ;       #   xox#  ;         ",
-        "                  #   xxx#            ",
-        "                  #swap(' ',' ')      ",
-        "                  #                   ",
-        "                  #  print(' ')       ",
-        "  ########        o                   ",
-        "r turn_ox1        #                   "
+        "                    #                    ",
+        "# #   ####          #    delete(' ')     ",
+        "# #                 #    xxx             ",
+        "# #        a;       #    xox#  ;         ",
+        "# #                 #    xxx#            ",
+        "# #                 #swap(' ',' ')       ",
+        "# #                 #                    ",
+        "# #                 #  print(' ')        ",
+        "# ########          o                    ",
+        "rxturn_ox1          #                    "
       ]
     },
     {
