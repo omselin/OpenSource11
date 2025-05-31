@@ -111,7 +111,7 @@ def get_board_inf(map: "Map"):
     ]
 
     # 0) 문자열 리터럴 스캔: "여기안에공백없음"
-    string_pattern = re.compile(r'("([^"\s]+)")|(\'([^\'\s]+)\')')
+    string_pattern = re.compile(r'("([^"\s;#]+)")|(\'([^\'\s;#]+)\')')
     for i in range(map.H):
         row = "".join(map.board[i])
         for m in string_pattern.finditer(row):

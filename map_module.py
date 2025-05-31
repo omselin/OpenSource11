@@ -20,6 +20,8 @@ class Map:
         self.H = len(lines)
         self.W = max(len(line) for line in lines) if lines else 0
         self.board = [list(line.ljust(self.W, self.EMPTY)) for line in lines]
+        self.past_board = [row.copy() for row in self.board]
+        self.past_board_inf=None
         self.returnValue=returnValue
         # UNDO/REDO 스택
         self._history: List[List[List[str]]] = []
@@ -115,16 +117,13 @@ class Map:
             self.board[ny][nx] = self.SEMICOLON
 
         return True
-    
-    def render(self, log=".                                             ") -> None:
-        
-        #log=x
-        출력관련.출력전처리(self.H+7)
+    def render_all(self,log):
         # 2) 맵 상단
         print(' ' + '_' * self.W)
 
         # 3) board_inf 계산
         board_inf = get_board_inf(self)
+        self.past_board_inf=board_inf
 
         # 4) 타입별 ANSI 컬러 매핑 (앞/뒤 reset 포함)
         COLOR = {
@@ -172,6 +171,60 @@ class Map:
         print("맵:", self.name)
         print("리턴값:", self.returnValue)
         print(log)
+    def render_diff(self, log):
+        # ANSI 컬러 매핑 (render_all과 동일)
+        COLOR = {
+            Inf.NONE:      "\033[38;2;135;206;250m",
+            Inf.SEMICOLON: "\033[36m",
+            Inf.OP:        "\033[33m",
+            Inf.FUNC:      "\033[38;5;229m",
+            Inf.CONTROL:   "\033[35m",
+            Inf.BOX:       "\033[90m",
+            Inf.STRING:    "\033[38;2;255;200;100m",
+        }
+        RESET = "\033[0m"
+
+        # 새 타입 맵 계산
+        new_board_inf = get_board_inf(self)
+
+        # 1) 변경된 셀만 출력
+        for y in range(self.H):
+            for x in range(self.W):
+                old_ch = self.past_board[y][x]
+                new_ch = self.board[y][x]
+                old_type = self.past_board_inf[y][x]
+                new_type = new_board_inf[y][x]
+
+                if new_ch != old_ch or new_type != old_type:
+                    # 커서를 (y+2, x+2) 위치로 이동 (1행: 상단 테두리, 1열: '|' 기호)
+                    print(f"\033[{y+2};{x+2}H", end='')
+                    # 색 적용 후 문자 출력
+                    print(f"{COLOR[new_type]}{new_ch}{RESET}", end='')
+
+        # 2) 상태창도 갱신
+        # 커서를 맵 아래로 이동
+        status_row = self.H + 4
+        print(f"\033[{status_row};1H", end='')
+        print("화살표 이동    Q:종료  Z:UNDO  X:REDO")
+        print(f"맵: {self.name}")
+        print(f"리턴값: {self.returnValue}")
+        print(log)
+
+        # 3) 이후 비교용으로 현재 상태 저장
+        self.past_board = [row.copy() for row in self.board]
+        self.past_board_inf = new_board_inf
+
+
+    def render(self, log=".                                             ") -> None:
+        
+        #log=x
+        r=출력관련.출력전처리(self.H+7)
+        if not r or self.past_board_inf is None:
+            self.render_all(log=log)
+        else:
+            self.render_diff(log=log)
+
+        
 
     # 외부에서 호출할 수 있는 UNDO/REDO 메서드
     def perform_undo(self) -> bool:

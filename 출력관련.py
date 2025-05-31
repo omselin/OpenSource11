@@ -28,5 +28,15 @@ def 출력전처리(n:int):
     x,y=get_cursor_pos_windows()
     if x!=n:
         os.system('cls' if os.name == 'nt' else 'clear')
+        return False
     else:
         print("\033[1;1H", end='')
+        return True
+def move_cursor_ansi(row: int, col: int):
+    import sys
+    """
+    ANSI CSI 시퀀스로 커서를 (row, col) 위치로 이동.
+    행(row)과 열(col)은 1부터 시작합니다.
+    """
+    sys.stdout.write(f"\x1b[{row};{col}H")
+    sys.stdout.flush()
