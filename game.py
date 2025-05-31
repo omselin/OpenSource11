@@ -78,7 +78,7 @@ class Game:
                         result=self.mapmanager.move_and_execute(dx, dy)
                         # 실패하는 경우는 아직은 무한루프뿐임
                     except RecursionError as e:
-                        self.mapmanager.perform_undo()
+                        self.mapmanager.undo()
                         self.mapmanager._future.clear()
                         self.mapmanager.render(f"Error: {e}")
                         #실패한 경우 다시 되돌리기기
