@@ -1,10 +1,11 @@
 from typing import List, Tuple, Optional, Dict
 import copy
-import multiprocessing
+from concurrent.futures import ThreadPoolExecutor, Future
+import threading
 from interpreter import interpret, get_board_inf
 from inf import Inf
 import 출력관련
-#import winsound
+import winsound
 
 
 def _simulate_move(logic_snapshot: "Map", move: Tuple[int, int]):
@@ -124,17 +125,17 @@ class MapManager:
 
     def __init__(self, logic: Map):
         self.logic = logic
-        # UNDO/REDO 스택: board 상태를 deep copy하여 보관
-        self._history: List[List[List[str]]] = []
-        self._future: List[List[List[str]]] = []
-        # 렌더용 과거 상태
-        self.past_board: List[List[str]] = [row.copy() for row in self.logic.board]
-        self.past_board_inf: Optional[List[List[Inf]]] = None
+        self._history, self._future = [], []
 
-        # 멀티프로세싱 풀(항상 살아 있는 상태로 유지)
-        self._pool = multiprocessing.Pool(processes=4)
-        # 방향별 AsyncResult 저장: (dx, dy) → AsyncResult
-        self._futures: Dict[Tuple[int, int], multiprocessing.pool.AsyncResult] = {}
+        self.past_board = [row.copy() for row in logic.board]
+        self.past_board_inf = None
+
+        self._pool: ThreadPoolExecutor = ThreadPoolExecutor(max_workers=4)
+        self._pred_future: Optional[Future] = None   # 단일 future
+        self._pred_dir:    Optional[Tuple[int, int]] = None
+        self._lock = threading.Lock()
+
+        self._last_dir: Optional[Tuple[int, int]] = None  # 직전 사용자가 이동한 방향
 
     def save_state(self):
         """현재 로직의 board를 deep copy하여 히스토리에 저장하고 REDO 스택 초기화."""
@@ -156,7 +157,7 @@ class MapManager:
         self.logic.W = len(prev_state[0]) if prev_state else 0
         self.logic._update_inf()
         # 예측된 데이터는 더 이상 유효하지 않으므로 초기화
-        self._clear_futures()
+        self._clear_future()
         #winsound.Beep(1000, 500)
         return True
 
@@ -173,113 +174,55 @@ class MapManager:
         self.logic.W = len(next_state[0]) if next_state else 0
         self.logic._update_inf()
         # 예측된 데이터는 더 이상 유효하지 않으므로 초기화
-        self._clear_futures()
+        self._clear_future()
         return True
 
-    def _clear_futures(self):
-        """모든 비동기 예측을 취소하지는 못하지만, 레퍼런스를 지워서 무시합니다."""
-        self._futures.clear()
+    def _precompute_next_move(self, direction: Tuple[int, int]) -> None:
+        """direction 한 가지만 미리 계산"""
+        self._clear_future()
+        logic_copy = copy.deepcopy(self.logic)
+        self._pred_future = self._pool.submit(_simulate_move, logic_copy, direction)
+        self._pred_dir    = direction
 
-    def _precompute_next_moves(self):
-        """
-        현재 self.logic 상태를 4방향으로 각각 복사하여
-        비동기(멀티프로세싱)로 move_and_execute를 호출한 뒤 AsyncResult를 저장합니다.
-        기다리지 않고 즉시 반환합니다.
-        """
-        # 기존에 남아 있는 Future들이 있으면 모두 무시(덮어쓰기)
-        self._clear_futures()
-
-        for move in self._NEXT_MOVES:
-            # MapLogic 복제본을 생성
-            logic_copy = copy.deepcopy(self.logic)
-            # apply_async로 비동기 실행, 즉시 AsyncResult 반환
-            future = self._pool.apply_async(_simulate_move, args=(logic_copy, move))
-            self._futures[move] = future
-        # 이 시점에 함수는 반환되며, 백그라운드에서 4개의 작업이 실행 중입니다.
+    def _clear_future(self):
+        self._pred_future = None
+        self._pred_dir    = None
 
     def initialize(self):
-        """
-        최초 해석/실행을 호출하고, UNDO를 위해 상태를 저장한 뒤 결과를 반환합니다.
-        """
-        result = self.logic.initialize()
-        self.save_state()
-        # 초기 상태에서의 예측을 즉시 예약해 둡니다.
-        self._precompute_next_moves()
-        return result
+        res = self.logic.initialize()
+        self.save_state()            # 첫 상태 저장
+        # 아직 사용자가 움직인 적이 없으므로 예측은 건너뛰어도 된다.
+        return res
 
     def move_and_execute(self, dx: int, dy: int):
-        """
-        사용자 입력 방향(dx, dy)에 대해:
-        1) 미리 예약된 비동기 예측(Future)이 있는지 검사
-           - 있으면 future.ready()로 완료 여부 확인
-             · 완료되었으면 future.get()으로 결과 획득
-             · 아직 미완료라면, 동기적으로 원본 self.logic에 move_and_execute 호출
-           - 없으면(예측이 없으면) 바로 원본 self.logic에 move_and_execute 호출
-        2) 예측/동기 처리 결과가 예외(exc)이면 raise
-        3) 결과가 False면(False 반환, 이동 불가)
-        4) 정상 결과면 self.logic을 적절히 업데이트
-        5) 상태 저장, 차후 4방향 예측 예약
-        """
-# 맵이 변경되었으므로 히스토리 저장
-        if not self._history:
-            self.save_state()
-        elif self._history[-1] != self.logic.board:
-            self.save_state()
+        direction = (dx, dy)
+        # (1) 직전 방향 예측이 있고 완료됐다면 사용
+        if self._pred_dir == direction and self._pred_future and self._pred_future.done():
+            logic_copy, result, exc = self._pred_future.result()
             #winsound.Beep(1000, 500)
-        future = self._futures.get((dx, dy))
-
-        if future is None:
-            # → 예측이 없으면 동기 처리: 원본 self.logic에 바로 적용
-            try:
-                #winsound.Beep(1000, 500)  
-                move_result = self.logic.move_and_execute(dx, dy)
-                logic_copy = self.logic  # 원본이 이미 바뀌었으므로 복사본 불필요
-                exc = None
-            except Exception as e:
-                move_result = None
-                logic_copy = None
-                exc = e
-
+            self._clear_future()
+            if exc:
+                raise exc
+            if logic_copy is not self.logic:
+                with self._lock:
+                    self.logic = logic_copy
         else:
-            # → Future가 있으면 완료 여부 확인
-            if future.ready():
-                logic_copy, move_result, exc = future.get()
+            # (2) 예측 없거나 미완료 → 동기 실행
+            with self._lock:
+                result = self.logic.move_and_execute(dx, dy)
 
-            else:
-                # 아직 완료되지 않았다면 동기 처리: 원본 self.logic에 바로 적용
-                try:
-                    #winsound.Beep(1000, 500)  
-                    move_result = self.logic.move_and_execute(dx, dy)
-                    logic_copy = self.logic
-                    exc = None
-                except Exception as e:
-                    move_result = None
-                    logic_copy = None
-                    exc = e
-
-            # (dx, dy) 예측으로 예약했던 Future는 사용했으므로 제거
-            self._futures.pop((dx, dy), None)
-
-        # 예측/동기 처리 결과 검사
-        if exc:
-            self._clear_futures()
-            raise exc
-
-        if move_result is False:
-            self._clear_futures()
+        if result is False:          # 이동 불가
+            self._clear_future()
             return False
 
-        # 정상 이동/해석: self.logic은 이미 위에서 직접 호출했거나
-        # 예측 복제본이 들어왔다면 logic_copy로 교체됨
-        if logic_copy is not self.logic:
-            # 미래에서 넘어온 복제본을 사용해야 하는 경우
-            self.logic = logic_copy
+        # (3) 히스토리 저장
+        if not self._history or self._history[-1] != self.logic.board:
+            self.save_state()
 
-        
-
-        # 새로운 상태 기반으로 4방향 비동기 예측 예약
-        self._precompute_next_moves()
-        return move_result
+        # (4) 방금 방향을 기록하고, 같은 방향을 다시 예측
+        self._last_dir = direction
+        self._precompute_next_move(direction)
+        return result
 
     def render_all(self, log: str):
         """보드 전체를 ANSI 컬러 적용하여 출력합니다."""
