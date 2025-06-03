@@ -624,6 +624,40 @@
       ]
     },
     {
+      "name": "lift1",
+      "returnValue": null,
+      "locked": false,
+      "data": [
+        ";                                      ",
+        "                                       ",
+        "                                       ",
+        "#########                              ",
+        "lift(\"u\")                              ",
+        "#########                              ",
+        "   ret rn                              ",
+        "                                       ",
+        "                                       ",
+        "      u                                "
+      ]
+    },
+    {
+      "name": "lift2",
+      "returnValue": null,
+      "locked": false,
+      "data": [
+        ";   ####                #       ",
+        "    abcd                #       ",
+        "                        #     b ",
+        "###### ##               #   cad ",
+        "lift(' ')               # abcad ",
+        "#########               #bacada ",
+        "lift(\"r\")               #abbccn ",
+        "lift(\"et\")              #badur# ",
+        "lift(\"ur\")              #bet##  ",
+        "lift(\"n\")               #r##   ;"
+      ]
+    },
+    {
       "name": "이현우",
       "returnValue": null,
       "locked": false,
