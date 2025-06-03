@@ -96,6 +96,11 @@ def interpret(map: 'Map') -> bool:
 
 
 def get_board_inf(map: "Map"):
+    def slow_fib(n: int) -> int:
+        if n <= 1:
+            return n
+        return slow_fib(n - 1) + slow_fib(n - 2)
+    #slow_fib(30)
     # 토큰 정의
     FUNC     = {"print","drop","swap","delete","scramble","teleport","explode","inverse"}
     CONTROL  = {"if","while","return","return_"}

@@ -65,25 +65,15 @@ class Game:
                 if ch.lower() == 'q':# QUIT
                     return False
                 if ch.lower() == 'z':  # UNDO
-                    if self.mapmanager.undo():
-                        self.mapmanager.render()
+                    self.mapmanager.undo()
                     continue
                 if ch.lower() == 'x':  # REDO
-                    if self.mapmanager.redo():
-                        self.mapmanager.render()
+                    self.mapmanager.redo()
                     continue
                 if ch in DIR:
                     dx, dy = DIR[ch]
-                    try:
-                        result=self.mapmanager.move_and_execute(dx, dy)
+                    result=self.mapmanager.move_and_execute(dx, dy)
                         # 실패하는 경우는 아직은 무한루프뿐임
-                    except RecursionError as e:
-                        self.mapmanager.undo()
-                        self.mapmanager._future.clear()
-                        self.mapmanager.render(f"Error: {e}")
-                        #실패한 경우 다시 되돌리기기
-                        continue
-                    self.mapmanager.render()
                     if not result:
                         return True
 

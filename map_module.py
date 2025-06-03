@@ -5,18 +5,18 @@ import threading
 from interpreter import interpret, get_board_inf
 from inf import Inf
 import 출력관련
-import winsound
+#import winsound
 
 
-def _simulate_move(logic_snapshot: "Map", move: Tuple[int, int]):
+def _simulate_move(maplogic_snapshot: "Map", move: Tuple[int, int]):
     """
-    단일 방향(dx, dy)에 대해 MapLogic.move_and_execute를 호출하여
-    (변경된 MapLogic, 결과, 예외) 튜플을 반환합니다.
+    단일 방향(dx, dy)에 대해 Mapmaplogic.move_and_execute를 호출하여
+    (변경된 Mapmaplogic, 결과, 예외) 튜플을 반환합니다.
     """
     dx, dy = move
     try:
-        result = logic_snapshot.move_and_execute(dx, dy)
-        return (logic_snapshot, result, None)
+        result = maplogic_snapshot.move_and_execute(dx, dy)
+        return (maplogic_snapshot, result, None)
     except Exception as e:
         return (None, None, e)
 
@@ -114,7 +114,7 @@ class Map:
 
 class MapManager:
     """
-    MapLogic 인스턴스를 감싸서
+    Mapmaplogic 인스턴스를 감싸서
     - 맵 히스토리(UNDO/REDO) 저장 및 제어
     - 다음 4방향에 대한 비동기 예측 (멀티프로세싱)
     - 맵 렌더링 (전체 또는 변경된 부분만 갱신)
@@ -123,14 +123,14 @@ class MapManager:
     # 예측할 4가지 방향: 위, 아래, 왼쪽, 오른쪽
     _NEXT_MOVES = [(0, -1), (0, 1), (-1, 0), (1, 0)]
 
-    def __init__(self, logic: Map):
-        self.logic = logic
+    def __init__(self, maplogic: Map):
+        self.maplogic = maplogic
         self._history, self._future = [], []
 
-        self.past_board = [row.copy() for row in logic.board]
+        self.past_board = [row.copy() for row in maplogic.board]
         self.past_board_inf = None
 
-        self._pool: ThreadPoolExecutor = ThreadPoolExecutor(max_workers=4)
+        self._pool: ThreadPoolExecutor = ThreadPoolExecutor(max_workers=8)
         self._pred_future: Optional[Future] = None   # 단일 future
         self._pred_dir:    Optional[Tuple[int, int]] = None
         self._lock = threading.Lock()
@@ -139,25 +139,26 @@ class MapManager:
 
     def save_state(self):
         """현재 로직의 board를 deep copy하여 히스토리에 저장하고 REDO 스택 초기화."""
-        self._history.append(copy.deepcopy(self.logic.board))
+        self._history.append(copy.deepcopy(self.maplogic.board))
         self._future.clear()
 
-    def undo(self) -> bool:
+    def undo(self,log=".                                  ") -> bool:
         """
         이전 상태로 되돌립니다. 성공 시 True, 실패 시 False.
-        성공 시 logic.board, H, W, board_inf가 복원됩니다.
+        성공 시 maplogic.board, H, W, board_inf가 복원됩니다.
         """
         if not self._history:
             return False
         # 현재 보드를 REDO 스택에 저장
-        self._future.append(copy.deepcopy(self.logic.board))
+        self._future.append(copy.deepcopy(self.maplogic.board))
         prev_state = self._history.pop()
-        self.logic.board = copy.deepcopy(prev_state)
-        self.logic.H = len(prev_state)
-        self.logic.W = len(prev_state[0]) if prev_state else 0
-        self.logic._update_inf()
+        self.maplogic.board = copy.deepcopy(prev_state)
+        self.maplogic.H = len(prev_state)
+        self.maplogic.W = len(prev_state[0]) if prev_state else 0
+        self.maplogic._update_inf()
         # 예측된 데이터는 더 이상 유효하지 않으므로 초기화
         self._clear_future()
+        self.render(log=log)
         #winsound.Beep(1000, 500)
         return True
 
@@ -167,21 +168,22 @@ class MapManager:
         """
         if not self._future:
             return False
-        self._history.append(copy.deepcopy(self.logic.board))
+        self._history.append(copy.deepcopy(self.maplogic.board))
         next_state = self._future.pop()
-        self.logic.board = copy.deepcopy(next_state)
-        self.logic.H = len(next_state)
-        self.logic.W = len(next_state[0]) if next_state else 0
-        self.logic._update_inf()
+        self.maplogic.board = copy.deepcopy(next_state)
+        self.maplogic.H = len(next_state)
+        self.maplogic.W = len(next_state[0]) if next_state else 0
+        self.maplogic._update_inf()
         # 예측된 데이터는 더 이상 유효하지 않으므로 초기화
         self._clear_future()
+        self.render()
         return True
 
     def _precompute_next_move(self, direction: Tuple[int, int]) -> None:
         """direction 한 가지만 미리 계산"""
         self._clear_future()
-        logic_copy = copy.deepcopy(self.logic)
-        self._pred_future = self._pool.submit(_simulate_move, logic_copy, direction)
+        maplogic_copy = copy.deepcopy(self.maplogic)
+        self._pred_future = self._pool.submit(_simulate_move, maplogic_copy, direction)
         self._pred_dir    = direction
 
     def _clear_future(self):
@@ -189,35 +191,43 @@ class MapManager:
         self._pred_dir    = None
 
     def initialize(self):
-        res = self.logic.initialize()
-        self.save_state()            # 첫 상태 저장
+        res = self.maplogic.initialize()
+        #self.save_state()            # 첫 상태 저장
         # 아직 사용자가 움직인 적이 없으므로 예측은 건너뛰어도 된다.
         return res
 
     def move_and_execute(self, dx: int, dy: int):
+        # (3) 히스토리 저장
+        if not self._history or self._history[-1] != self.maplogic.board:
+            self.save_state()
         direction = (dx, dy)
         # (1) 직전 방향 예측이 있고 완료됐다면 사용
         if self._pred_dir == direction and self._pred_future and self._pred_future.done():
-            logic_copy, result, exc = self._pred_future.result()
+            maplogic_copy, result, exc = self._pred_future.result()
             #winsound.Beep(1000, 500)
             self._clear_future()
             if exc:
-                raise exc
-            if logic_copy is not self.logic:
+                self.undo(log=exc)
+                result=True
+            elif maplogic_copy is not self.maplogic:
                 with self._lock:
-                    self.logic = logic_copy
+                    self.maplogic = maplogic_copy
+                    self.render()
+
         else:
             # (2) 예측 없거나 미완료 → 동기 실행
             with self._lock:
-                result = self.logic.move_and_execute(dx, dy)
-
+                try:
+                    result = self.maplogic.move_and_execute(dx, dy)
+                    self.render()
+                except RecursionError as e:
+                    self.undo(log=e)
+                    result=True
         if result is False:          # 이동 불가
             self._clear_future()
             return False
 
-        # (3) 히스토리 저장
-        if not self._history or self._history[-1] != self.logic.board:
-            self.save_state()
+        
 
         # (4) 방금 방향을 기록하고, 같은 방향을 다시 예측
         self._last_dir = direction
@@ -226,7 +236,7 @@ class MapManager:
 
     def render_all(self, log: str):
         """보드 전체를 ANSI 컬러 적용하여 출력합니다."""
-        game_map = self.logic
+        game_map = self.maplogic
         W, H = game_map.W, game_map.H
         board = game_map.board
         board_inf = game_map.board_inf
@@ -278,7 +288,7 @@ class MapManager:
 
     def render_diff(self, log: str):
         """이전 보드와 Inf 정보를 기반으로 변경된 부분만 갱신 출력합니다."""
-        game_map = self.logic
+        game_map = self.maplogic
         W, H = game_map.W, game_map.H
         board = game_map.board
         new_board_inf = game_map.board_inf
@@ -322,7 +332,7 @@ class MapManager:
         출력 전처리를 수행한 뒤,
         past_board_inf가 None이면 전체 렌더, 아니면 변경된 부분만 렌더합니다.
         """
-        H = self.logic.H
+        H = self.maplogic.H
         r = 출력관련.출력전처리(H + 7)
         if not r or self.past_board_inf is None:
             self.render_all(log)
