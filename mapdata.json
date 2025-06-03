@@ -153,6 +153,23 @@
       ]
     },
     {
+      "name": "assign3",
+      "returnValue": null,
+      "locked": false,
+      "data": [
+        "                  #                  ",
+        "                  #                  ",
+        "                  #                  ",
+        "                  #                  ",
+        ";print(\"r\")       #     =\"eu\";   ",
+        "                  #                  ",
+        "                  #                  ",
+        "                  #        #         ",
+        "                  #                  ",
+        "                  #                  "
+      ]
+    },
+    {
       "name": "순차처리",
       "returnValue": null,
       "locked": false,

@@ -96,6 +96,11 @@ def interpret(map: 'Map') -> bool:
 
 
 def get_board_inf(map: "Map"):
+    def slow_fib(n: int) -> int:
+        if n <= 1:
+            return n
+        return slow_fib(n - 1) + slow_fib(n - 2)
+    #slow_fib(30)
     # 토큰 정의
     FUNC     = {"print","drop","swap","delete","scramble","teleport","explode","inverse"}
     CONTROL  = {"if","while","return","return_"}
@@ -111,7 +116,7 @@ def get_board_inf(map: "Map"):
     ]
 
     # 0) 문자열 리터럴 스캔: "여기안에공백없음"
-    string_pattern = re.compile(r'("([^"\s]+)")|(\'([^\'\s]+)\')')
+    string_pattern = re.compile(r'("([^"\s;#]+)")|(\'([^\'\s;#]+)\')')
     for i in range(map.H):
         row = "".join(map.board[i])
         for m in string_pattern.finditer(row):
