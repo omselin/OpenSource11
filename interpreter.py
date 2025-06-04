@@ -102,7 +102,7 @@ def get_board_inf(map: "Map"):
         return slow_fib(n - 1) + slow_fib(n - 2)
     #slow_fib(30)
     # 토큰 정의
-    FUNC     = {"print","drop","swap","delete","scramble","teleport","explode","inverse"}
+    FUNC     = {"print","drop","swap","delete","scramble","teleport","explode","inverse","lift","switch"}
     CONTROL  = {"if","while","return","return_"}
     SEMI_CH  = {";"}
     BOX_CH   = {"#"}
@@ -126,8 +126,9 @@ def get_board_inf(map: "Map"):
 
     # 1) 다글자 토큰 스캔 (문자열 리터럴 건너뛰기)
     scan_list = [
-        (CONTROL, Inf.CONTROL),
         (FUNC,    Inf.FUNC),
+        (CONTROL, Inf.CONTROL),
+        
     ]
     for i in range(map.H):
         row = "".join(map.board[i])
