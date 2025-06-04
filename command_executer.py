@@ -186,7 +186,7 @@ def delete(map: 'Map', args: list, out) -> bool:
 # ⬇️ 이현우님 작업 시작 위치 (이 아래에만 작성해 주세요. 이 주석은 나중에 병합 기준이 되므로 수정하지 마세요.)
 def switch(map: 'Map', args: list, out) -> bool:
     """
-    map.board 전체에서 문자 a와 b를 서서로 교환한다.
+    map.board 전체에서 문자 a와 b를 서로 교환한다.
     """
     a, b = args
     c = b
@@ -210,6 +210,59 @@ def switch(map: 'Map', args: list, out) -> bool:
     
     return True
 
+def lift(map: 'Map', text: str) -> Tuple[bool, bool]:
+    """
+    board에 있는 `text` 전부를 위로 들어올린다.
+    - 같은 줄에 연속으로 있는 정확한 문자열만 대상으로 함
+    - 위에 다른 문자가 있거나 보드 위에 닿으면 멈춤
+    - 하나라도 움직였으면 changed=True
+    반환: (changed, True)
+    """
+    if not text:
+        return True
+
+    L = len(text)
+    board = map.board
+    H, W = map.H, map.W
+
+    # 1) 모든 occurrence 수집
+    occ = []
+    for y in range(H):
+        for x in range(W - L + 1):
+            if ''.join(board[y][x:x + L]) == text:
+                occ.append((x, y))
+
+    # 2) 위쪽부터 처리 (충돌 계산을 단순화)
+    occ.sort(key=lambda p: p[1])
+
+    changed = False
+    for x, y in occ:
+        # 다른 이동 때문에 이미 지워졌을 수도 있으니 다시 확인
+        if ''.join(board[y][x:x + L]) != text:
+            continue
+
+        # 2-1) 들어올릴 수 있는 최대 거리 계산
+        dist = 0
+        while True:
+            ny = y - dist - 1
+            if ny < 0:  # 위쪽 벽
+                break
+            blocked = any(board[ny][x + i] != map.EMPTY for i in range(L))
+            if blocked:
+                break
+            dist += 1
+
+        if dist == 0:
+            continue  # 이미 바로 위가 막혀 있음
+
+        # 2-2) 문자 이동
+        changed = True
+        for i in range(L):                 # 원래 위치 지우기
+            board[y][x + i] = map.EMPTY
+        for i, ch in enumerate(text):      # 새로운 위치 채우기
+            board[y - dist][x + i] = ch
+
+    return changed, True
 
 # ⬇️ Farhan Latiff님 작업 시작 위치 (이 아래에만 작성해 주세요. 이 주석은 나중에 병합 기준이 되므로 수정하지 마세요.)
 def explode(map: 'Map', ch: str) -> bool:

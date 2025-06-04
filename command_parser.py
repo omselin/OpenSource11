@@ -65,6 +65,10 @@ def parse_and_execute_command(map:'Map',variable_map:'VariableMap',code, pos:tup
         args = code[7:-1]
         a, b = [x.strip().strip("'") for x in args.split(",")]
         return ce.switch(map, [a, b], None)
+    if code.startswith('lift(') and code.endswith(')'):
+        arg = code[5:-1]
+        text=variable_map.get_value(arg)
+        return ce.lift(map,str(text))
 # ⬇️ Farhan Latiff님 작업 시작 위치 (이 아래에만 작성해 주세요. 이 주석은 나중에 병합 기준이 되므로 수정하지 마세요.)
     if code.startswith('explode(') and code.endswith(')'):
         arg = code[8:-1].strip()

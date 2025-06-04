@@ -638,8 +638,42 @@
         "                                       ",
         "                                       ",
         "                                       ",
-        "#######################################",
-        "return_a+b*c-d;#a=3;b=4;c=5;d=6;       "
+        "############                           ",
+        "return_5;#                             "
+      ]
+    },
+    {
+      "name": "lift1",
+      "returnValue": null,
+      "locked": false,
+      "data": [
+        ";                                      ",
+        "                                       ",
+        "                                       ",
+        "#########                              ",
+        "lift(\"u\")                              ",
+        "#########                              ",
+        "   ret rn                              ",
+        "                                       ",
+        "                                       ",
+        "      u                                "
+      ]
+    },
+    {
+      "name": "lift2",
+      "returnValue": null,
+      "locked": false,
+      "data": [
+        ";   ####                #       ",
+        "    abcd                #       ",
+        "                        #     b ",
+        "###### ##               #   cad ",
+        "lift(' ')               # abcad ",
+        "#########               #bacada ",
+        "lift(\"r\")               #abbccn ",
+        "lift(\"et\")              #badur# ",
+        "lift(\"ur\")              #bet##  ",
+        "lift(\"n\")               #r##   ;"
       ]
     },
     {
